@@ -1,15 +1,14 @@
 package cys.share.image.entity;
 
-import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
+import cys.share.image.entity.realm.NavTagRealm;
+import cys.share.image.entity.realm.imp.RealmTransaction;
 
 /**
  * Created by Administrator on 2016/10/27.
  */
 
-public class NavTag extends RealmObject{
+public class NavTag implements RealmTransaction<NavTagRealm,NavTag>{
 
-    @PrimaryKey
     private String name;
 
     public String getName() {
@@ -18,5 +17,19 @@ public class NavTag extends RealmObject{
 
     public void setName(String name) {
         this.name = name;
+    }
+
+
+    @Override
+    public NavTag toObject(NavTagRealm navTagRealm) {
+        this.name = navTagRealm.getName();
+        return this;
+    }
+
+    @Override
+    public NavTagRealm toRealmObject() {
+        NavTagRealm navTagRealm = new NavTagRealm();
+        navTagRealm.setName(this.name);
+        return navTagRealm;
     }
 }

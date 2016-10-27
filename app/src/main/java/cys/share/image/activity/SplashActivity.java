@@ -13,7 +13,6 @@ import cys.share.image.R;
 import cys.share.image.api.ShareImageApi;
 import cys.share.image.auxiliary.ShareImageAuxiliaryTool;
 import cys.share.image.database.ShareImageRealm;
-import cys.share.image.databinding.ActivitySplashBinding;
 import cys.share.image.entity.NavTag;
 import rx.Subscriber;
 
