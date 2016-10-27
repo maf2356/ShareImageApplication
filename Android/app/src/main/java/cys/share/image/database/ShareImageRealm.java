@@ -8,6 +8,7 @@ import java.util.Objects;
 
 import cys.share.image.auxiliary.ShareImageAuxiliaryTool;
 import cys.share.image.entity.NavTag;
+import cys.share.image.entity.realm.NavTagRealm;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmObject;
@@ -46,17 +47,19 @@ public class ShareImageRealm {
 
 
     public void saveNavTags(NavTag data) {
+
         mRealm.beginTransaction();
-        mRealm.copyToRealmOrUpdate(data);
+        mRealm.copyToRealmOrUpdate(data.toRealmObject());
         mRealm.commitTransaction();
     }
 
     public List<NavTag> queryNavTags() {
-        RealmResults<NavTag> navTags = mRealm.where(NavTag.class).findAll();
+        RealmResults<NavTagRealm> navTags = mRealm.where(NavTagRealm.class).findAll();
         List<NavTag> data = new ArrayList<>();
-        for (NavTag tag:navTags
+        for (NavTagRealm tag:navTags
              ) {
-            data.add(tag);
+            NavTag navTag = new NavTag();
+            data.add(navTag.toObject(tag));
             ShareImageAuxiliaryTool.log(tag.getName());
         }
         return data;

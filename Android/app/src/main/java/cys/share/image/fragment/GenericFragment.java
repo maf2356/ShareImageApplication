@@ -1,5 +1,6 @@
 package cys.share.image.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -7,17 +8,21 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
+import cys.share.image.activity.MainActivity;
+import cys.share.image.adapter.GenericAdapter;
+import cys.share.image.api.ShareImageApi;
+import cys.share.image.auxiliary.ShareImageAuxiliaryTool;
+import cys.share.image.database.ShareImageRealm;
+import cys.share.image.entity.NavTag;
+import cys.share.image.entity.TagContent;
 import cys.share.image.entity.a;
 import cys.share.image.fragment.base.BaseFragment;
+import rx.Subscriber;
 
 /**
  * Created by Administrator on 2016/10/27.
  */
-public class GenericFragment extends BaseFragment<a> {
-
-    private String tag;
-
-    private List<Object> mContentItems = new ArrayList<>();
+public class GenericFragment extends BaseFragment<TagContent> {
 
     public static GenericFragment newInstance(String tag) {
         GenericFragment fragment = new GenericFragment();
@@ -30,6 +35,22 @@ public class GenericFragment extends BaseFragment<a> {
 
     @Override
     public void requestData() {
+        String tag = getArguments().getString("tag");
+        ShareImageApi.getTagList("xFNuCZhGRwW5KE9tUA8tPndZOxChcAVY", tag, 1, new Subscriber<List<TagContent>>() {
+            @Override
+            public void onCompleted() {
+                mDataBinding.recyclerView.setAdapter(new GenericAdapter(mData));
+            }
+
+            @Override
+            public void onError(Throwable e) {
+            }
+
+            @Override
+            public void onNext(List<TagContent> tagContents) {
+                mData = tagContents;
+            }
+        });
 
     }
 
@@ -40,10 +61,6 @@ public class GenericFragment extends BaseFragment<a> {
 
     @Override
     public void onViewCreated(@Nullable Bundle savedInstanceState) {
-        for (int i = 0; i < 50; ++i) {
-            mContentItems.add(new Object());
-        }
-        mDataBinding.recyclerView.setAdapter(new TestRecyclerViewAdapter(mContentItems));
-
+        requestData();
     }
 }

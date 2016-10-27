@@ -3,7 +3,9 @@ package cys.share.image.api;
 import java.util.List;
 
 import cys.share.image.api.server.NaVTagsServer;
+import cys.share.image.api.server.TagListServer;
 import cys.share.image.entity.NavTag;
+import cys.share.image.entity.TagContent;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -20,15 +22,15 @@ public class ShareImageApi {
 
     private final static String BASEURL = "http://tu42.com/";
 
-    private static<T> Observable<T> creatObservable(Observable.OnSubscribe<T> onSubscribe, Subscriber<T> subscriber){
-        Observable<T>  observable =  Observable.create(onSubscribe)
+    private static <T> Observable<T> creatObservable(Observable.OnSubscribe<T> onSubscribe, Subscriber<T> subscriber) {
+        Observable<T> observable = Observable.create(onSubscribe)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
         observable.subscribe(subscriber);
         return observable;
     }
 
-    private static Retrofit createRetrofit(){
+    private static Retrofit createRetrofit() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASEURL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -37,12 +39,30 @@ public class ShareImageApi {
         return retrofit;
     }
 
-    public static void getNavTags(Subscriber<List<String>> subscriber){
+    /**
+     * 获取导航Tag
+     *
+     * @param subscriber
+     */
+    public static void getNavTags(Subscriber<List<String>> subscriber) {
         Retrofit retrofit = createRetrofit();
         retrofit.create(NaVTagsServer.class)
                 .getNavTags()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
+    }
+
+    public static void getTagList(String token,String tag,int page,Subscriber<List<TagContent>> subscriber) {
+        TagListServer server = createServer(TagListServer.class);
+        server.getTagList(token,tag,page)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
+    private static <T> T createServer(Class<T> t) {
+        Retrofit retrofit = createRetrofit();
+        return (T) retrofit.create(t);
     }
 }

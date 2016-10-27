@@ -57,7 +57,6 @@ public class TestRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
                 view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.list_item_card_small, parent, false);
                 TextView textView = (TextView) view.findViewById(R.id.text);
-                textView.setText(new Random().nextInt()+"");
                 return new RecyclerView.ViewHolder(view) {
                 };
             }
@@ -65,6 +64,10 @@ public class TestRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
         return null;
     }
 
+
+    private void testBind(int position){
+        this.contents.get(position);
+    }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {

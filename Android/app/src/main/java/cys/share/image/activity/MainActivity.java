@@ -27,6 +27,10 @@ import cys.share.image.entity.NavTag;
 import cys.share.image.fragment.GenericFragment;
 import rx.Subscriber;
 
+
+/**
+ * TODO 布局包含include 无法生成databinding，采用原始方法
+ */
 public class MainActivity extends AppCompatActivity {
 
     MaterialViewPager mMaterialViewPager;
@@ -63,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public Fragment getItem(int position) {
-
                 return GenericFragment.newInstance(getPageTitle(position).toString());
             }
 
