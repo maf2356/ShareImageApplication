@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+
+    </data>
 <android.support.v4.widget.DrawerLayout
     android:id="@+id/drawer_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -38,3 +42,4 @@
     <include layout="@layout/drawer_left" />
 
 </android.support.v4.widget.DrawerLayout>
+</layout>
