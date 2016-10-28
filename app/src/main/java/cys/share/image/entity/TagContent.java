@@ -2,6 +2,7 @@ package cys.share.image.entity;
 
 import com.google.gson.Gson;
 
+import cys.share.image.entity.realm.BaseBean;
 import cys.share.image.entity.realm.TagContentRealm;
 import cys.share.image.entity.realm.imp.RealmTransaction;
 import io.realm.RealmObject;
@@ -10,7 +11,7 @@ import io.realm.annotations.PrimaryKey;
 /**
  * Created by Administrator on 2016/10/27.
  */
-public class TagContent implements RealmTransaction<TagContentRealm,TagContent>{
+public class TagContent extends BaseBean implements RealmTransaction<TagContentRealm,TagContent>{
 
     private int id;
 
@@ -18,7 +19,7 @@ public class TagContent implements RealmTransaction<TagContentRealm,TagContent>{
 
     private String shortContent;
 
-    private String cover;
+    private Cover cover;
 
     private int imageCount;
 
@@ -58,11 +59,11 @@ public class TagContent implements RealmTransaction<TagContentRealm,TagContent>{
         this.shortContent = shortContent;
     }
 
-    public String getCover() {
+    public Cover getCover() {
         return cover;
     }
 
-    public void setCover(String cover) {
+    public void setCover(Cover cover) {
         this.cover = cover;
     }
 
@@ -127,7 +128,7 @@ public class TagContent implements RealmTransaction<TagContentRealm,TagContent>{
         Gson gson = new Gson();
         this.id = tagContentRealm.getId();
         this.commentCount = tagContentRealm.getCommentCount();
-        this.cover = tagContentRealm.getCover();
+        this.cover = gson.fromJson(tagContentRealm.getCover(),Cover.class);
         this.createTime = tagContentRealm.getCreateTime();
         this.imageCount = tagContentRealm.getImageCount();
         this.imageIds = tagContentRealm.getImageIds();
@@ -144,7 +145,7 @@ public class TagContent implements RealmTransaction<TagContentRealm,TagContent>{
         Gson gson = new Gson();
         TagContentRealm tagContentRealm = new TagContentRealm();
         tagContentRealm.setCommentCount(this.commentCount);
-        tagContentRealm.setCover(this.cover);
+        tagContentRealm.setCover(gson.toJson(this.cover));
         tagContentRealm.setCreateTime(this.createTime);
         tagContentRealm.setId(this.id);
         tagContentRealm.setImageCount(this.imageCount);

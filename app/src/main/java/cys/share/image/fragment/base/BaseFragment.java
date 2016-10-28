@@ -51,5 +51,6 @@ public abstract class BaseFragment<T> extends Fragment{
         mDataBinding.recyclerView.setHasFixedSize(true);
         mDataBinding.recyclerView.addItemDecoration(new MaterialViewPagerHeaderDecorator());
         onViewCreated(savedInstanceState);
+        requestData();
     }
 }

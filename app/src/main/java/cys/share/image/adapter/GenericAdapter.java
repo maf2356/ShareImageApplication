@@ -2,6 +2,7 @@ package cys.share.image.adapter;
 
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import java.util.List;
 import cys.share.image.BR;
 import cys.share.image.R;
 import cys.share.image.databinding.GenericItemBinding;
+import cys.share.image.entity.Cover;
 import cys.share.image.entity.TagContent;
 
 /**
@@ -38,7 +40,11 @@ public class GenericAdapter extends RecyclerView.Adapter<GenericAdapter.BindingH
     @Override
     public void onBindViewHolder(BindingHolder holder, int position) {
         holder.getBinding().setVariable(BR.item,mData.get(position));
-        holder.getBinding().setCoverUrl(mData.get(position).getCover());
+        Cover cover = mData.get(position).getCover();
+        if(cover!=null&& !TextUtils.isEmpty(cover.getMiddleUrl())){
+            holder.getBinding().setCoverUrl(cover.getMiddleUrl());
+
+        }
         holder.getBinding().executePendingBindings();
     }
 
