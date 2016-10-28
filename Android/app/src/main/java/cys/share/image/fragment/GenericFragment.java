@@ -8,6 +8,7 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
+import cys.share.image.Constant;
 import cys.share.image.activity.MainActivity;
 import cys.share.image.adapter.GenericAdapter;
 import cys.share.image.api.ShareImageApi;
@@ -25,6 +26,9 @@ import rx.Subscriber;
 public class GenericFragment extends BaseFragment<TagContent> {
 
     public static GenericFragment newInstance(String tag) {
+        if(tag.equals(Constant.ALLTAGS)){
+            tag = "";
+        }
         GenericFragment fragment = new GenericFragment();
         Bundle args = new Bundle();
         args.putString("tag", tag);
@@ -61,6 +65,5 @@ public class GenericFragment extends BaseFragment<TagContent> {
 
     @Override
     public void onViewCreated(@Nullable Bundle savedInstanceState) {
-        requestData();
     }
 }

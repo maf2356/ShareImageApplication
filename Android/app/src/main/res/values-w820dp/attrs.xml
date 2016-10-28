@@ -22,4 +22,8 @@
         <attr name="border_color" format="color" />
     </declare-styleable>
 
+
+    <declare-styleable name="tagcontentimageview">
+        <attr name="ratio" format="float" />
+    </declare-styleable>
 </resources>

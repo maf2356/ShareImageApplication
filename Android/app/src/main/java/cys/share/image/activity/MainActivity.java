@@ -19,6 +19,7 @@ import com.github.florent37.materialviewpager.header.HeaderDesign;
 
 import java.util.List;
 
+import cys.share.image.Constant;
 import cys.share.image.R;
 import cys.share.image.api.ShareImageApi;
 import cys.share.image.auxiliary.ShareImageAuxiliaryTool;
@@ -60,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
         }
         mNavtags = ShareImageRealm.getInstance(this.getApplicationContext()).queryNavTags();
 
-
         mDrawerToggle=new ActionBarDrawerToggle(this,mDrawer,0,0);
         mDrawer.setDrawerListener(mDrawerToggle);
         mMaterialViewPager.getViewPager().setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
@@ -77,6 +77,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public CharSequence getPageTitle(int position) {
+                if(position == 0){
+                    return Constant.ALLTAGS;
+                }
                 return mNavtags.get(position).getName();
             }
         });

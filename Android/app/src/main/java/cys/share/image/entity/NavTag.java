@@ -1,5 +1,6 @@
 package cys.share.image.entity;
 
+import cys.share.image.entity.realm.BaseBean;
 import cys.share.image.entity.realm.NavTagRealm;
 import cys.share.image.entity.realm.imp.RealmTransaction;
 
@@ -7,7 +8,7 @@ import cys.share.image.entity.realm.imp.RealmTransaction;
  * Created by Administrator on 2016/10/27.
  */
 
-public class NavTag implements RealmTransaction<NavTagRealm,NavTag>{
+public class NavTag extends BaseBean implements RealmTransaction<NavTagRealm,NavTag>{
 
     private String name;
 
