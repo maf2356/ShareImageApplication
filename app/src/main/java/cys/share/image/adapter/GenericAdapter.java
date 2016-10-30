@@ -1,6 +1,8 @@
 package cys.share.image.adapter;
 
+import android.app.Activity;
 import android.databinding.DataBindingUtil;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -15,6 +17,7 @@ import cys.share.image.R;
 import cys.share.image.databinding.GenericItemBinding;
 import cys.share.image.entity.Cover;
 import cys.share.image.entity.TagContent;
+import cys.share.image.listener.ShareImageEventListener;
 
 /**
  * Created by Administrator on 2016/10/27.
@@ -23,9 +26,12 @@ public class GenericAdapter extends RecyclerView.Adapter<GenericAdapter.BindingH
 
 
     private List<TagContent> mData = new ArrayList<>();
-
-    public GenericAdapter(List<TagContent> data){
+    private ShareImageEventListener mListener;
+    private FragmentActivity mActivity;
+    public GenericAdapter(FragmentActivity activity,List<TagContent> data){
+        this.mActivity = activity;
         this.mData = data;
+        mListener = new ShareImageEventListener();
     }
 
     @Override
@@ -43,8 +49,13 @@ public class GenericAdapter extends RecyclerView.Adapter<GenericAdapter.BindingH
         Cover cover = mData.get(position).getCover();
         if(cover!=null&& !TextUtils.isEmpty(cover.getMiddleUrl())){
             holder.getBinding().setCoverUrl(cover.getMiddleUrl());
-
         }
+        String userAvatar = mData.get(position).getUser().getAvatar();
+        if(!TextUtils.isEmpty(userAvatar)){
+            holder.getBinding().setAvatarUrl(userAvatar);
+        }
+        holder.getBinding().setActivity(mActivity);
+        holder.getBinding().setListener(mListener);
         holder.getBinding().executePendingBindings();
     }
 

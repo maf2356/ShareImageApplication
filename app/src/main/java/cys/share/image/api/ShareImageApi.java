@@ -1,11 +1,16 @@
 package cys.share.image.api;
 
+import com.google.common.eventbus.Subscribe;
+
 import java.util.List;
 
 import cys.share.image.api.server.NaVTagsServer;
 import cys.share.image.api.server.TagListServer;
+import cys.share.image.api.server.UserRelevantServer;
 import cys.share.image.entity.NavTag;
+import cys.share.image.entity.ResponseMessage;
 import cys.share.image.entity.TagContent;
+import cys.share.image.entity.User;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -56,6 +61,14 @@ public class ShareImageApi {
     public static void getTagList(String token,String tag,int page,Subscriber<List<TagContent>> subscriber) {
         TagListServer server = createServer(TagListServer.class);
         server.getTagList(token,tag,page)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
+    public static void register(String account, String nickName, String password, Subscriber<User> subscriber){
+        UserRelevantServer relevantServer = createServer(UserRelevantServer.class);
+        relevantServer.register(account,nickName,password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);

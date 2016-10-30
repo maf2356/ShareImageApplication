@@ -3,12 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <import type="cys.share.image.entity.User"></import>
+        <import type="cys.share.image.auxiliary.ShareImageAuxiliaryTool"></import>
         <variable
             name="item"
             type="cys.share.image.entity.TagContent"/>
         <variable
             name="coverUrl"
             type="String"/>
+
+        <variable
+            name="listener"
+            type="cys.share.image.listener.ShareImageEventListener"></variable>
+        <variable
+            name="avatarUrl"
+            type="String"/>
+        <variable
+            name="activity"
+            type="android.support.v4.app.FragmentActivity"></variable>
     </data>
 <android.support.v7.widget.CardView
     android:layout_width="match_parent"
@@ -25,22 +36,63 @@
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/user_info_title_height">
+            <ImageView
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_launcher"
+                app:loadAvatar="@{avatarUrl}"
+                android:layout_alignParentLeft="true"
+                android:layout_width="@dimen/user_info_avatar_width"
+                android:layout_height="@dimen/user_info_avatar_height"
+                android:clickable="true"
+                android:id="@+id/avatar" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@{item.user.nickName}"
-            />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{item.user.nickName}"
+                android:layout_marginLeft="@dimen/user_info_margin"
+                android:id="@+id/userName"
+                android:textSize="@dimen/user_info_nick_text_size"
+                android:textStyle="bold"
+                android:layout_alignTop="@+id/avatar"
+                android:layout_toEndOf="@+id/avatar" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{ShareImageAuxiliaryTool.transformationTime(item.createTime)}"
+                android:textSize="@dimen/user_info_create_time_text_size"
+                android:layout_alignBottom="@+id/avatar"
+                android:layout_alignStart="@+id/userName" />
+
+        </RelativeLayout>
 
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
             app:imageUrl="@{coverUrl}"
+            android:src="@mipmap/img_default"
+            android:onClick="@{(view)->listener.showLargeView(view,activity)}"
             app:width="@{item.cover.width}"
             app:height="@{item.cover.height}"
             />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/user_info_other"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:textSize="@dimen/user_info_hints"
+                android:textColor="@android:color/darker_gray"
+                android:text="@{ShareImageAuxiliaryTool.showLikeCountAndCommentCount(item.likeCount,item.commentCount)}"></TextView>
+        </RelativeLayout>
     </LinearLayout>
 </android.support.v7.widget.CardView >
 </layout>

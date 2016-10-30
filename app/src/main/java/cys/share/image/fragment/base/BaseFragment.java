@@ -16,6 +16,11 @@ import java.util.List;
 import cys.share.image.BaseFragmentDataBinding;
 import cys.share.image.R;
 import cys.share.image.auxiliary.MaterialViewPagerHeaderDecorator;
+import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
+import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
+import jp.wasabeef.recyclerview.animators.FadeInAnimator;
+import jp.wasabeef.recyclerview.animators.LandingAnimator;
+import jp.wasabeef.recyclerview.animators.OvershootInLeftAnimator;
 
 /**
  * Created by Administrator on 2016/10/26.
@@ -50,6 +55,8 @@ public abstract class BaseFragment<T> extends Fragment{
         mDataBinding.recyclerView.setLayoutManager(layoutManager);
         mDataBinding.recyclerView.setHasFixedSize(true);
         mDataBinding.recyclerView.addItemDecoration(new MaterialViewPagerHeaderDecorator());
+        mDataBinding.recyclerView.setItemAnimator(new FadeInAnimator());
+
         onViewCreated(savedInstanceState);
         requestData();
     }
