@@ -1,5 +1,6 @@
 package cys.share.image.activity;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
@@ -12,6 +13,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.github.florent37.materialviewpager.MaterialViewPager;
@@ -24,13 +26,16 @@ import cys.share.image.R;
 import cys.share.image.api.ShareImageApi;
 import cys.share.image.auxiliary.ShareImageAuxiliaryTool;
 import cys.share.image.database.ShareImageRealm;
+import cys.share.image.databinding.ActivityMainBinding;
 import cys.share.image.entity.NavTag;
+import cys.share.image.entity.User;
 import cys.share.image.fragment.GenericFragment;
+import cys.share.image.listener.ShareImageEventListener;
 import rx.Subscriber;
 
 
 /**
- * TODO 布局包含include 无法生成databinding，采用原始方法
+ * TODO
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -39,12 +44,20 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawer;
     private ActionBarDrawerToggle mDrawerToggle;
     private List<NavTag> mNavtags;
+    private View mDrawerLayout;
+    ActivityMainBinding mBinding;
+    ShareImageEventListener mEventListener;
+    User mUser = new User();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        mMaterialViewPager = (MaterialViewPager) findViewById(R.id.materialViewPager);
-        mDrawer=(DrawerLayout)findViewById(R.id.drawer_layout);
+
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        mEventListener = new ShareImageEventListener();
+        mMaterialViewPager = mBinding.materialViewPager;
+        mDrawer = mBinding.drawerLayout;
+        mDrawerLayout = mBinding.otherRootView;
         toolbar = mMaterialViewPager.getToolbar();
         if (toolbar != null) {
             setSupportActionBar(toolbar);
@@ -57,11 +70,11 @@ public class MainActivity extends AppCompatActivity {
                 actionBar.setHomeButtonEnabled(true);
             }
 
-            toolbar.setLayoutParams(new RelativeLayout.LayoutParams(toolbar.getWidth(),getStatusBarHeight()));
+            toolbar.setLayoutParams(new RelativeLayout.LayoutParams(toolbar.getWidth(), getStatusBarHeight()));
         }
         mNavtags = ShareImageRealm.getInstance(this.getApplicationContext()).queryNavTags();
 
-        mDrawerToggle=new ActionBarDrawerToggle(this,mDrawer,0,0);
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawer, 0, 0);
         mDrawer.setDrawerListener(mDrawerToggle);
         mMaterialViewPager.getViewPager().setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
 
@@ -77,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public CharSequence getPageTitle(int position) {
-                if(position == 0){
+                if (position == 0) {
                     return Constant.ALLTAGS;
                 }
                 return mNavtags.get(position).getName();
@@ -89,17 +102,21 @@ public class MainActivity extends AppCompatActivity {
         mMaterialViewPager.setMaterialViewPagerListener(new MaterialViewPager.Listener() {
             @Override
             public HeaderDesign getHeaderDesign(int page) {
-                 return HeaderDesign.fromColorResAndUrl(
+                return HeaderDesign.fromColorResAndUrl(
                         R.color.colorPrimaryDark,
                         "http://www.tothemobile.com/wp-content/uploads/2014/07/original.jpg");
             }
         });
 
-
-
+        User user = ShareImageRealm.getInstance(MainActivity.this).queryUserInfo();
+        if(user!=null){
+            mBinding.setUser(user);
+        }
+        mDrawer.openDrawer(mDrawerLayout);
+        mBinding.setListener(mEventListener);
     }
 
-    public  int getStatusBarHeight() {
+    public int getStatusBarHeight() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT)
             return 0;
 
@@ -108,5 +125,22 @@ public class MainActivity extends AppCompatActivity {
         if (resourceId > 0)
             return resources.getDimensionPixelSize(resourceId);
         return 0;
+    }
+
+    public void mainLogin(View view){
+        Intent intent = new Intent(this,LoginActivity.class);
+        startActivityForResult(intent,Constant.LOGIN_SUCCESS);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == Constant.LOGIN_SUCCESS){
+            mUser = ShareImageRealm.getInstance(MainActivity.this).queryUserInfo();
+            if(mUser!=null){
+                mBinding.setUser(mUser);
+            }
+
+        }
     }
 }

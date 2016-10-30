@@ -1,5 +1,6 @@
 package cys.share.image.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,12 +19,16 @@ import cys.share.image.entity.NavTag;
 import cys.share.image.entity.TagContent;
 import cys.share.image.entity.a;
 import cys.share.image.fragment.base.BaseFragment;
+import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
+import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
 import rx.Subscriber;
 
 /**
  * Created by Administrator on 2016/10/27.
  */
 public class GenericFragment extends BaseFragment<TagContent> {
+
+
 
     public static GenericFragment newInstance(String tag) {
         if(tag.equals(Constant.ALLTAGS)){
@@ -43,7 +48,12 @@ public class GenericFragment extends BaseFragment<TagContent> {
         ShareImageApi.getTagList("xFNuCZhGRwW5KE9tUA8tPndZOxChcAVY", tag, 1, new Subscriber<List<TagContent>>() {
             @Override
             public void onCompleted() {
-                mDataBinding.recyclerView.setAdapter(new GenericAdapter(mData));
+                GenericAdapter adapter = new GenericAdapter(getActivity(),mData);
+                AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(adapter);
+                ScaleInAnimationAdapter scaleAdapter = new ScaleInAnimationAdapter(alphaAdapter);
+//        scaleAdapter.setFirstOnly(false);
+//        scaleAdapter.setInterpolator(new OvershootInterpolator());
+                mDataBinding.recyclerView.setAdapter(scaleAdapter);
             }
 
             @Override
