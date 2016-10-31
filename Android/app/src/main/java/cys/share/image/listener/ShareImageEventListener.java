@@ -1,6 +1,8 @@
 package cys.share.image.listener;
 
 import android.content.Intent;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.Toast;
@@ -29,12 +31,14 @@ public class ShareImageEventListener {
     }
 
     public void showLargeView(View view, FragmentActivity activity){
-        ShareImageAuxiliaryTool.log("123123");
-        final LargeViewFragment largeViewFragment = new LargeViewFragment();
-        FragmentTransitionLauncher
-                .with(view.getContext())
-                .from(view)
-                .prepare(largeViewFragment);
-        activity.getSupportFragmentManager().beginTransaction().replace(R.id.support_content, largeViewFragment).addToBackStack(null).commit();
+        Intent intent = LargeViewActivity.newIntent(activity, "http://cdn.tu42.com/timeline/20161028/ce778c4938b3c7e2.jpg!w750?auth_key=1478497864-0-0-6bf190f646fc46f0fbb2465d320ad1ab", "123");
+        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                activity, view, LargeViewActivity.TRANSIT_PIC);
+        try {
+            ActivityCompat.startActivity(activity, intent, optionsCompat.toBundle());
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            activity.startActivity(intent);
+        }
     }
 }

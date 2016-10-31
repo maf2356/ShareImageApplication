@@ -92,6 +92,7 @@
     <FrameLayout
         android:id="@+id/support_content"
         android:layout_width="match_parent"
-        android:layout_height="150dp" />
+        android:layout_height="150dp"
+        android:visibility="gone"/>
 </android.support.v4.widget.DrawerLayout>
 </layout>

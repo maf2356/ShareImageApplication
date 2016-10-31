@@ -44,6 +44,7 @@
                     />
 
                 <EditText
+                    android:id="@+id/loginAccount"
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/user_login_register_text_margin"
                     android:layout_height="wrap_content"
@@ -58,6 +59,8 @@
                     />
 
                 <EditText
+
+                    android:id="@+id/loginPassword"
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/user_login_register_text_margin"
                     android:layout_height="wrap_content"
@@ -80,7 +83,7 @@
                         android:layout_width="wrap_content"
                         android:background="@drawable/shape_login_btn"
                         android:text="LOGIN"
-                        android:onClick="_login"
+                        android:onClick="login"
                         android:textColor="@android:color/white"
                         android:textSize="@dimen/button_text_size"
                         android:layout_height="@dimen/button_height" />

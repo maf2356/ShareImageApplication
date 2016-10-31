@@ -18,4 +18,7 @@ public interface UserRelevantServer {
 
     @POST("api/user/register")
     Observable<User> register(@Query("account") String account, @Query("nickName")String nickName, @Query("password")String password);
+
+    @POST("api/user/login")
+    Observable<User> login(@Query("account") String account, @Query("password")String password);
 }
