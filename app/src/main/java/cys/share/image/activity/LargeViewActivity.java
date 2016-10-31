@@ -13,6 +13,7 @@ import com.squareup.picasso.Picasso;
 
 import cys.share.image.R;
 import cys.share.image.databinding.ActivityLargeviewingBinding;
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
  * Created by Administrator on 2016/10/31.
@@ -24,6 +25,8 @@ public class LargeViewActivity extends AppCompatActivity{
     public static final String EXTRA_IMAGE_TITLE = "image_title";
     public static final String TRANSIT_PIC = "picture";
     String mImageUrl, mImageTitle;
+    private PhotoViewAttacher mPhotoViewAttacher;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +36,8 @@ public class LargeViewActivity extends AppCompatActivity{
 
         ViewCompat.setTransitionName(mBingding.img, TRANSIT_PIC);
         Picasso.with(this).load(mImageUrl).into(mBingding.img);
+
+        mPhotoViewAttacher = new PhotoViewAttacher(mBingding.img);
     }
 
     public static Intent newIntent(Context context, String url, String desc) {

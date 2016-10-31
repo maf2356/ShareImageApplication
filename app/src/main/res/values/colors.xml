@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#575758</color>
     <color name="colorAccent">#FF4081</color>
     <color name="background">#f73e3e3e</color>
+    <color name="largeView_background">#000000</color>
 </resources>
