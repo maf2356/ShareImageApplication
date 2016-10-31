@@ -74,6 +74,15 @@ public class ShareImageApi {
                 .subscribe(subscriber);
     }
 
+    public static void login(String account,String password,Subscriber<User> subscriber){
+        UserRelevantServer relevantServer = createServer(UserRelevantServer.class);
+        relevantServer.login(account,password)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
+
     private static <T> T createServer(Class<T> t) {
         Retrofit retrofit = createRetrofit();
         return (T) retrofit.create(t);

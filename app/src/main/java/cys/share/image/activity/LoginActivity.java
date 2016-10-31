@@ -42,8 +42,36 @@ public class LoginActivity extends AppCompatActivity{
 
     }
 
-    public void test(View view){
+    public void login(View view){
+        final ProgressDialog registerDialog = ShareImageAuxiliaryTool.createProgressDialog(this,"请稍等","正在登陆中...");
+        String account = mBinding.loginAccount.getText().toString();
+        String password = mBinding.loginPassword.getText().toString();
+        ShareImageApi.login(account,password, new Subscriber<User>() {
+            @Override
+            public void onCompleted() {
+                ((ShareImageApplication)LoginActivity.this.getApplication()).setLogin(true);
+                registerDialog.dismiss();
+                LoginActivity.this.finish();
+            }
 
+            @Override
+            public void onError(Throwable e) {
+                Toast.makeText(LoginActivity.this, "登陆失败", Toast.LENGTH_SHORT).show();
+                registerDialog.dismiss();
+                ShareImageAuxiliaryTool.log(e.getMessage());
+            }
+
+            @Override
+            public void onNext(User responseMessage) {
+                //register succ
+                if(responseMessage!=null){
+                    Toast.makeText(LoginActivity.this, "登陆成功", Toast.LENGTH_SHORT).show();
+                    ShareImageRealm.getInstance(LoginActivity.this).saveUserInfo(responseMessage);
+                    ShareImageAuxiliaryTool.saveToken(LoginActivity.this,responseMessage.getToken());
+
+                }
+            }
+        });
     }
 
     public void register(View view){

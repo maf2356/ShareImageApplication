@@ -49,7 +49,7 @@ public class ShareImageRealm {
 
     public void saveUserInfo(User user){
         mRealm.beginTransaction();
-        mRealm.copyToRealm(user.toRealmObject());
+        mRealm.copyToRealmOrUpdate(user.toRealmObject());
         mRealm.commitTransaction();
     }
 
