@@ -2,11 +2,18 @@ package cys.share.image.api.server;
 
 import java.util.List;
 
+import cys.share.image.entity.MyUploadImage;
 import cys.share.image.entity.ResponseMessage;
 import cys.share.image.entity.User;
+import cys.share.image.entity.realm.MyUploadImageRealm;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 import rx.Observable;
 
@@ -21,4 +28,9 @@ public interface UserRelevantServer {
 
     @POST("api/user/login")
     Observable<User> login(@Query("account") String account, @Query("password")String password);
+
+    @Multipart
+    @POST("api/timeline/uploadImage")
+    Observable<MyUploadImage> uploadImage(@Part("token") RequestBody token,
+                                          @Part MultipartBody.Part file);
 }

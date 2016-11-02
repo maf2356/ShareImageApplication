@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cys.share.image.R;
+import cys.share.image.activity.ReleaseActivity;
 import cys.share.image.imagepicker.intent.PhotoPreviewIntent;
 
 public class PhotoPickerActivity extends AppCompatActivity {
@@ -561,8 +562,10 @@ public class PhotoPickerActivity extends AppCompatActivity {
     // 返回已选择的图片数据
     private void complete(){
         Intent data = new Intent();
+        data.setClass(this, ReleaseActivity.class);
         data.putStringArrayListExtra(EXTRA_RESULT, resultList);
-        setResult(RESULT_OK, data);
+        startActivity(data);
+//        setResult(RESULT_OK, data);
         finish();
     }
 

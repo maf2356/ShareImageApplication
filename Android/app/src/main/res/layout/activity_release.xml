@@ -38,12 +38,21 @@
         android:id="@+id/et_context"
         android:layout_width="match_parent"
         android:layout_height="100dp" />
+    <cys.share.image.view.ShareImageProgressBar
+        android:id="@+id/shareImageProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="20dp" >
+    </cys.share.image.view.ShareImageProgressBar>
     <GridView
         android:id="@+id/gridView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:horizontalSpacing="@dimen/space_size"
         android:numColumns="3"
+        android:visibility="gone"
         android:verticalSpacing="@dimen/space_size" />
 </LinearLayout>
 </layout>

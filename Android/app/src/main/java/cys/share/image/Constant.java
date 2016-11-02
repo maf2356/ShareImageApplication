@@ -10,4 +10,5 @@ public class Constant {
     public static final String TOKEN = "token";
     public static final String ALLTAGS = "全部";
     public static final int LOGIN_SUCCESS = 1;
+    public static final int UPLOAD_WHAT = 2;
 }
