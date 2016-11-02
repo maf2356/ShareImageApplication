@@ -76,7 +76,7 @@
             android:adjustViewBounds="true"
             app:imageUrl="@{coverUrl}"
             android:src="@mipmap/img_default"
-            android:onClick="@{(view)->listener.showLargeView(view,activity)}"
+            android:onClick="@{(view)->listener.showLargeView(view,activity,item)}"
             app:width="@{item.cover.width}"
             app:height="@{item.cover.height}"
             />

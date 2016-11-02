@@ -12,9 +12,13 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.github.florent37.materialviewpager.MaterialViewPager;
 import com.github.florent37.materialviewpager.header.HeaderDesign;
@@ -40,7 +44,6 @@ import rx.Subscriber;
 public class MainActivity extends AppCompatActivity {
 
     MaterialViewPager mMaterialViewPager;
-    Toolbar toolbar;
     private DrawerLayout mDrawer;
     private ActionBarDrawerToggle mDrawerToggle;
     private List<NavTag> mNavtags;
@@ -48,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     ActivityMainBinding mBinding;
     ShareImageEventListener mEventListener;
     User mUser = new User();
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,23 +62,36 @@ public class MainActivity extends AppCompatActivity {
         mMaterialViewPager = mBinding.materialViewPager;
         mDrawer = mBinding.drawerLayout;
         mDrawerLayout = mBinding.otherRootView;
-        toolbar = mMaterialViewPager.getToolbar();
-        if (toolbar != null) {
-            setSupportActionBar(toolbar);
-            final ActionBar actionBar = getSupportActionBar();
-            if (actionBar != null) {
-                actionBar.setDisplayHomeAsUpEnabled(true);
-                actionBar.setDisplayShowHomeEnabled(true);
-                actionBar.setDisplayShowTitleEnabled(true);
-                actionBar.setDisplayUseLogoEnabled(false);
-                actionBar.setHomeButtonEnabled(true);
-            }
+//
+//        mBinding.toolbar.setNavigationIcon(R.mipmap.ic_launcher);
+//        setSupportActionBar(mBinding.toolbar);
+//
+//        final ActionBar actionBar = getSupportActionBar();
+//        if (actionBar != null) {
+//            actionBar.setDisplayHomeAsUpEnabled(true);
+//            actionBar.setDisplayShowHomeEnabled(true);
+//            actionBar.setDisplayShowTitleEnabled(true);
+//            actionBar.setDisplayUseLogoEnabled(false);
+//            actionBar.setHomeButtonEnabled(true);
+//        }
+        mMaterialViewPager.getToolbar().inflateMenu(R.menu.menu_main);
+//        toolbar = mMaterialViewPager.getToolbar();
+//        if (toolbar != null) {
+//            setSupportActionBar(toolbar);
+//            final ActionBar actionBar = getSupportActionBar();
+//            if (actionBar != null) {
+//                actionBar.setDisplayHomeAsUpEnabled(true);
+//                actionBar.setDisplayShowHomeEnabled(true);
+//                actionBar.setDisplayShowTitleEnabled(true);
+//                actionBar.setDisplayUseLogoEnabled(false);
+//                actionBar.setHomeButtonEnabled(true);
+//            }
 
-            toolbar.setLayoutParams(new RelativeLayout.LayoutParams(toolbar.getWidth(), getStatusBarHeight()));
-        }
+//            toolbar.setLayoutParams(new RelativeLayout.LayoutParams(toolbar.getWidth(), getStatusBarHeight()));
+//        }
         mNavtags = ShareImageRealm.getInstance(this.getApplicationContext()).queryNavTags();
 
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawer, 0, 0);
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawer,toolbar, 0, 0);
         mDrawer.setDrawerListener(mDrawerToggle);
         mMaterialViewPager.getViewPager().setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
 
@@ -131,6 +148,13 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this,LoginActivity.class);
         startActivityForResult(intent,Constant.LOGIN_SUCCESS);
     }
+    //此方法定义Menu的布局样式，返回false则不显示Menu
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -142,5 +166,18 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
+    }
+
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return mDrawerToggle.onOptionsItemSelected(item) ||
+                super.onOptionsItemSelected(item);
     }
 }

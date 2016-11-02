@@ -1,5 +1,7 @@
 package cys.share.image.entity;
 
+import java.io.Serializable;
+
 import cys.share.image.entity.realm.BaseBean;
 import cys.share.image.entity.realm.imp.CoverRealm;
 import cys.share.image.entity.realm.imp.RealmTransaction;
@@ -8,7 +10,7 @@ import cys.share.image.entity.realm.imp.RealmTransaction;
  * Created by Administrator on 2016/10/28.
  */
 
-public class Cover extends BaseBean implements RealmTransaction<CoverRealm,Cover>{
+public class Cover extends BaseBean implements RealmTransaction<CoverRealm,Cover>,Serializable{
 
 
     private int id;

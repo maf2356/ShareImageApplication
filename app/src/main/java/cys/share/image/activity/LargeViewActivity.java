@@ -13,6 +13,7 @@ import com.squareup.picasso.Picasso;
 
 import cys.share.image.R;
 import cys.share.image.databinding.ActivityLargeviewingBinding;
+import cys.share.image.entity.TagContent;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
@@ -21,29 +22,24 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 public class LargeViewActivity extends AppCompatActivity{
 
     ActivityLargeviewingBinding mBingding;
-    public static final String EXTRA_IMAGE_URL = "image_url";
-    public static final String EXTRA_IMAGE_TITLE = "image_title";
+    public static final String EXTRA_TAGCONTENT = TagContent.class.getName();
     public static final String TRANSIT_PIC = "picture";
-    String mImageUrl, mImageTitle;
     private PhotoViewAttacher mPhotoViewAttacher;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBingding = DataBindingUtil.setContentView(this, R.layout.activity_largeviewing);
-        mImageUrl = getIntent().getStringExtra(EXTRA_IMAGE_URL);
-        mImageTitle = getIntent().getStringExtra(EXTRA_IMAGE_TITLE);
 
         ViewCompat.setTransitionName(mBingding.img, TRANSIT_PIC);
-        Picasso.with(this).load(mImageUrl).into(mBingding.img);
-
+        TagContent item = (TagContent) getIntent().getSerializableExtra(EXTRA_TAGCONTENT);
+        mBingding.setItem(item);
         mPhotoViewAttacher = new PhotoViewAttacher(mBingding.img);
     }
 
-    public static Intent newIntent(Context context, String url, String desc) {
+    public static Intent newIntent(Context context, TagContent item) {
         Intent intent = new Intent(context, LargeViewActivity.class);
-        intent.putExtra(LargeViewActivity.EXTRA_IMAGE_URL, url);
-        intent.putExtra(LargeViewActivity.EXTRA_IMAGE_TITLE, desc);
+        intent.putExtra(LargeViewActivity.EXTRA_TAGCONTENT, item);
         return intent;
     }
 }

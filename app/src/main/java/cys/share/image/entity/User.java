@@ -3,6 +3,8 @@ package cys.share.image.entity;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
+import java.io.Serializable;
+
 import cys.share.image.BR;
 import cys.share.image.entity.realm.BaseBean;
 import cys.share.image.entity.realm.TagContentRealm;
@@ -25,7 +27,7 @@ import io.realm.annotations.PrimaryKey;
  "thirdParty": []
  }
  */
-public class User extends BaseObservable implements RealmTransaction<UserRealm,User> {
+public class User extends BaseObservable implements RealmTransaction<UserRealm,User>,Serializable{
 
     private int id;
 

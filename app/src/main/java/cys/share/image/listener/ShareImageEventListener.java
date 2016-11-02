@@ -13,6 +13,7 @@ import com.kogitune.activity_transition.fragment.FragmentTransitionLauncher;
 import cys.share.image.R;
 import cys.share.image.activity.LargeViewActivity;
 import cys.share.image.auxiliary.ShareImageAuxiliaryTool;
+import cys.share.image.entity.TagContent;
 import cys.share.image.fragment.LargeViewFragment;
 
 /**
@@ -30,8 +31,8 @@ public class ShareImageEventListener {
 
     }
 
-    public void showLargeView(View view, FragmentActivity activity){
-        Intent intent = LargeViewActivity.newIntent(activity, "http://cdn.tu42.com/timeline/20161028/ce778c4938b3c7e2.jpg!w750?auth_key=1478497864-0-0-6bf190f646fc46f0fbb2465d320ad1ab", "123");
+    public void showLargeView(View view, FragmentActivity activity, TagContent item){
+        Intent intent = LargeViewActivity.newIntent(activity, item);
         ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(
                 activity, view, LargeViewActivity.TRANSIT_PIC);
         try {
