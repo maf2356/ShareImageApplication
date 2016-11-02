@@ -1,16 +1,31 @@
 package cys.share.image.api;
 
+import android.os.Handler;
+import android.util.Log;
+
 import com.google.common.eventbus.Subscribe;
 
+import java.io.File;
 import java.util.List;
 
+import cys.share.image.Constant;
+import cys.share.image.api.custom.DefaultProgressListener;
+import cys.share.image.api.custom.UploadFileRequestBody;
 import cys.share.image.api.server.NaVTagsServer;
 import cys.share.image.api.server.TagListServer;
 import cys.share.image.api.server.UserRelevantServer;
+import cys.share.image.entity.MyUploadImage;
 import cys.share.image.entity.NavTag;
 import cys.share.image.entity.ResponseMessage;
 import cys.share.image.entity.TagContent;
 import cys.share.image.entity.User;
+import cys.share.image.entity.realm.MyUploadImageRealm;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -70,6 +85,25 @@ public class ShareImageApi {
         UserRelevantServer relevantServer = createServer(UserRelevantServer.class);
         relevantServer.register(account,nickName,password)
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
+    public static void uploadImage(String filePath, String token, Subscriber<MyUploadImage> subscriber, Handler handler){
+        File file = new File(filePath);
+
+        UploadFileRequestBody ufb = new UploadFileRequestBody(file,new DefaultProgressListener(handler, Constant.UPLOAD_WHAT));
+
+
+        MultipartBody.Part body =
+                MultipartBody.Part.createFormData("imageFile", file.getName(), ufb);
+
+        RequestBody tokenBody =
+                RequestBody.create(
+                        MediaType.parse("multipart/form-data"), token);
+
+        UserRelevantServer userRelevantServer = createServer(UserRelevantServer.class);
+        userRelevantServer.uploadImage(tokenBody,body) .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
     }
