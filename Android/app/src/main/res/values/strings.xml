@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ShareImageApplication</string>
+    <string name="my_pictures">我的图片</string>
 </resources>

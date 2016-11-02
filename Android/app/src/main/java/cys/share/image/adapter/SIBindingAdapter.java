@@ -37,4 +37,9 @@ public class SIBindingAdapter {
             Picasso.with(view.getContext()).load(url).config(Bitmap.Config.RGB_565).error(R.drawable.ic_launcher).into(view);
     }
 
+    @BindingAdapter({"loadImage"})
+    public static void loadLargeViewImage(ImageView view, String url) {
+            Picasso.with(view.getContext()).load(url).config(Bitmap.Config.ARGB_8888).into(view);
+    }
+
 }

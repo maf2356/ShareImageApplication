@@ -17,4 +17,10 @@
     <dimen name="user_login_register_text_hints">24dp</dimen>
     <dimen name="button_height">36dp</dimen>
     <dimen name="button_text_size">14dp</dimen>
+    
+    <dimen name="user_drawer_avatar_margin_top">48dp</dimen>
+    <dimen name="user_drawer_avatar_size">100dp</dimen>
+    <dimen name="user_drawer_item_margin_top">10dp</dimen>
+    <dimen name="user_drawer_item_margin_left">20dp</dimen>
+    <dimen name="user_drawer_item_height">48dp</dimen>
 </resources>

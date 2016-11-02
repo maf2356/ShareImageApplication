@@ -2,6 +2,8 @@ package cys.share.image.entity;
 
 import com.google.gson.Gson;
 
+import java.io.Serializable;
+
 import cys.share.image.entity.realm.BaseBean;
 import cys.share.image.entity.realm.TagContentRealm;
 import cys.share.image.entity.realm.imp.RealmTransaction;
@@ -11,7 +13,7 @@ import io.realm.annotations.PrimaryKey;
 /**
  * Created by Administrator on 2016/10/27.
  */
-public class TagContent extends BaseBean implements RealmTransaction<TagContentRealm,TagContent>{
+public class TagContent extends BaseBean implements RealmTransaction<TagContentRealm,TagContent>,Serializable{
 
     private int id;
 
