@@ -1,11 +1,13 @@
 package cys.share.image.auxiliary;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.icu.text.DateFormat;
 import android.os.Build;
 import android.text.TextUtils;
@@ -65,4 +67,14 @@ public class ShareImageAuxiliaryTool {
     public static ProgressDialog createProgressDialog(Context ctx,String title,String message){
         return ProgressDialog.show(ctx,title,message);
     }
+
+    public static void requestPermission(Activity context){
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
+            int hasPermissions = context.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
+            if(hasPermissions!= PackageManager.PERMISSION_GRANTED){
+                context.requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},0);
+            }
+        }
+    }
+
 }
