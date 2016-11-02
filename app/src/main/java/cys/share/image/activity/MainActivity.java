@@ -4,21 +4,17 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
-import android.provider.ContactsContract;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.florent37.materialviewpager.MaterialViewPager;
 import com.github.florent37.materialviewpager.header.HeaderDesign;
@@ -27,15 +23,15 @@ import java.util.List;
 
 import cys.share.image.Constant;
 import cys.share.image.R;
-import cys.share.image.api.ShareImageApi;
 import cys.share.image.auxiliary.ShareImageAuxiliaryTool;
 import cys.share.image.database.ShareImageRealm;
 import cys.share.image.databinding.ActivityMainBinding;
 import cys.share.image.entity.NavTag;
 import cys.share.image.entity.User;
 import cys.share.image.fragment.GenericFragment;
+import cys.share.image.imagepicker.SelectModel;
+import cys.share.image.imagepicker.intent.PhotoPickerIntent;
 import cys.share.image.listener.ShareImageEventListener;
-import rx.Subscriber;
 
 
 /**
@@ -52,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
     ShareImageEventListener mEventListener;
     User mUser = new User();
     Toolbar toolbar;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         mMaterialViewPager = mBinding.materialViewPager;
         mDrawer = mBinding.drawerLayout;
         mDrawerLayout = mBinding.otherRootView;
+        ShareImageAuxiliaryTool.requestPermission(this);
 //
 //        mBinding.toolbar.setNavigationIcon(R.mipmap.ic_launcher);
 //        setSupportActionBar(mBinding.toolbar);
@@ -75,6 +71,24 @@ public class MainActivity extends AppCompatActivity {
 //            actionBar.setHomeButtonEnabled(true);
 //        }
         mMaterialViewPager.getToolbar().inflateMenu(R.menu.menu_main);
+        mMaterialViewPager.getToolbar().setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.action_settings:
+                        PhotoPickerIntent intent = new PhotoPickerIntent(MainActivity.this);
+                        intent.setSelectModel(SelectModel.MULTI);
+                        intent.setShowCarema(true); // 是否显示拍照
+                        intent.setMaxTotal(1); // 最多选择照片数量，默认为6
+//                        intent.setSelectedPaths(imagePaths); // 已选中的照片地址， 用于回显选中状态
+                        startActivity(intent);
+
+//                        startActivity(new Intent(MainActivity.this,ReleaseActivity.class));
+                        break;
+                }
+                return true;
+            }
+        });
 //        toolbar = mMaterialViewPager.getToolbar();
 //        if (toolbar != null) {
 //            setSupportActionBar(toolbar);
@@ -177,7 +191,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return mDrawerToggle.onOptionsItemSelected(item) ||
-                super.onOptionsItemSelected(item);
+        switch (item.getItemId()){
+            case R.id.action_settings:
+                Toast.makeText(this, "123", Toast.LENGTH_SHORT).show();
+                break;
+        }
+        return true;
     }
 }
