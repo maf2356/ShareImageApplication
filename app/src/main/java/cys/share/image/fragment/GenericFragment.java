@@ -49,11 +49,11 @@ public class GenericFragment extends BaseFragment<TagContent> {
             @Override
             public void onCompleted() {
                 GenericAdapter adapter = new GenericAdapter(getActivity(),mData);
-                AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(adapter);
-                ScaleInAnimationAdapter scaleAdapter = new ScaleInAnimationAdapter(alphaAdapter);
+//                AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(adapter);
+//                ScaleInAnimationAdapter scaleAdapter = new ScaleInAnimationAdapter(alphaAdapter);
 //        scaleAdapter.setFirstOnly(false);
 //        scaleAdapter.setInterpolator(new OvershootInterpolator());
-                mDataBinding.recyclerView.setAdapter(scaleAdapter);
+                mDataBinding.recyclerView.setAdapter(adapter);
             }
 
             @Override

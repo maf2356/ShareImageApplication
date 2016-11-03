@@ -10,10 +10,12 @@ import android.support.v7.app.AppCompatActivity;
 import java.util.List;
 
 import cys.share.image.R;
+import cys.share.image.ShareImageApplication;
 import cys.share.image.api.ShareImageApi;
 import cys.share.image.auxiliary.ShareImageAuxiliaryTool;
 import cys.share.image.database.ShareImageRealm;
 import cys.share.image.entity.NavTag;
+import cys.share.image.entity.User;
 import rx.Subscriber;
 
 /**
@@ -34,6 +36,11 @@ public class SplashActivity extends AppCompatActivity{
         ShareImageApi.getNavTags(new Subscriber<List<String>>() {
             @Override
             public void onCompleted() {
+                User user = ShareImageRealm.getInstance(SplashActivity.this).queryUserInfo();
+                if(user!=null){
+                    ((ShareImageApplication)getApplication()).setToken(user.getToken());
+                }
+
                 startActivity(new Intent(SplashActivity.this,MainActivity.class));
                 SplashActivity.this.finish();
             }
@@ -46,6 +53,8 @@ public class SplashActivity extends AppCompatActivity{
 
             @Override
             public void onNext(List<String> navTags) {
+
+
                 for (String name:navTags
                      ) {
                     NavTag tag = new NavTag();

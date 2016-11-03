@@ -9,6 +9,8 @@ public class ShareImageApplication extends Application{
 
     private boolean isLogin = false;
 
+    private String token;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -16,5 +18,13 @@ public class ShareImageApplication extends Application{
 
     public void setLogin(boolean login) {
         isLogin = login;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

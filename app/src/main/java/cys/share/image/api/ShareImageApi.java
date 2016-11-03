@@ -6,6 +6,7 @@ import android.util.Log;
 import com.google.common.eventbus.Subscribe;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import cys.share.image.Constant;
@@ -89,10 +90,10 @@ public class ShareImageApi {
                 .subscribe(subscriber);
     }
 
-    public static void uploadImage(String filePath, String token, Subscriber<MyUploadImage> subscriber, Handler handler){
+    public static void uploadImage(String filePath, String token, Subscriber<MyUploadImage> subscriber, Handler handler,int what){
         File file = new File(filePath);
 
-        UploadFileRequestBody ufb = new UploadFileRequestBody(file,new DefaultProgressListener(handler, Constant.UPLOAD_WHAT));
+        UploadFileRequestBody ufb = new UploadFileRequestBody(file,new DefaultProgressListener(handler, what));
 
 
         MultipartBody.Part body =
@@ -107,6 +108,26 @@ public class ShareImageApi {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
     }
+
+
+    public static void uploadImages(List<String> filePath, String token, Subscriber<MyUploadImage> subscriber, Handler handler){
+        List<Observable<MyUploadImage>> observableList = new ArrayList<>();
+        UserRelevantServer userRelevantServer = createServer(UserRelevantServer.class);
+        for (int i= 0;i<filePath.size();i++){
+            File file = new File(filePath.get(i));
+            UploadFileRequestBody ufb = new UploadFileRequestBody(file,new DefaultProgressListener(handler, i));
+            MultipartBody.Part body =
+                    MultipartBody.Part.createFormData("imageFile", file.getName(), ufb);
+            RequestBody tokenBody =
+                    RequestBody.create(
+                            MediaType.parse("multipart/form-data"), token);
+            observableList.add(userRelevantServer.uploadImage(tokenBody,body) .subscribeOn(Schedulers.io()));
+        }
+
+        Observable.merge(observableList).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
 
     public static void login(String account,String password,Subscriber<User> subscriber){
         UserRelevantServer relevantServer = createServer(UserRelevantServer.class);

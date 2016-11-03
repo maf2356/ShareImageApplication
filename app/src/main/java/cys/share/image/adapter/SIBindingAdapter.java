@@ -32,6 +32,11 @@ public class SIBindingAdapter {
 //        Glide.with(view.getContext()).load(url).into(view);
     }
 
+    @BindingAdapter({"imageUrl"})
+    public static void loadImage(ImageView view, String url) {
+            Picasso.with(view.getContext()).load(url).config(Bitmap.Config.RGB_565).into(view);
+    }
+
     @BindingAdapter({"loadAvatar"})
     public static void loadAvatar(ImageView view, String url) {
             Picasso.with(view.getContext()).load(url).config(Bitmap.Config.RGB_565).error(R.drawable.ic_launcher).into(view);
