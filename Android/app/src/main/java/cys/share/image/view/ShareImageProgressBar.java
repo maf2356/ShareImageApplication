@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.RelativeLayout;
 
+import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -63,8 +64,13 @@ public class ShareImageProgressBar extends RelativeLayout {
 	}
 
 	public void setImage(String path){
-		File img = new File(path);
-		Picasso.with(this.getContext()).load(img).into(imageView);
+		Glide.with(this.getContext())
+				.load(path)
+				.placeholder(R.mipmap.default_error)
+				.error(R.mipmap.default_error)
+				.centerCrop()
+				.crossFade()
+				.into(imageView);
 	}
 	public void setImageScaleType(ScaleType scale) {
 		imageView.setScaleType(scale);

@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
                         PhotoPickerIntent intent = new PhotoPickerIntent(MainActivity.this);
                         intent.setSelectModel(SelectModel.MULTI);
                         intent.setShowCarema(true); // 是否显示拍照
-                        intent.setMaxTotal(1); // 最多选择照片数量，默认为6
+                        intent.setMaxTotal(6); // 最多选择照片数量，默认为6
 //                        intent.setSelectedPaths(imagePaths); // 已选中的照片地址， 用于回显选中状态
                         startActivity(intent);
 
