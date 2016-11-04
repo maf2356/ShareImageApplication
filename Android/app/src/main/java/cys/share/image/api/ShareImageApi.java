@@ -90,6 +90,15 @@ public class ShareImageApi {
                 .subscribe(subscriber);
     }
 
+    public static void _public(String token,String ids,String content,String tags,Subscriber<TagContent> subscriber){
+        UserRelevantServer relevantServer = createServer(UserRelevantServer.class);
+        relevantServer.publicTagContent(token,ids,content,tags)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+
+    }
+
     public static void uploadImage(String filePath, String token, Subscriber<MyUploadImage> subscriber, Handler handler,int what){
         File file = new File(filePath);
 
