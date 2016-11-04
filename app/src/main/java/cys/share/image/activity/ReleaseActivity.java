@@ -2,8 +2,10 @@ package cys.share.image.activity;
 
 import android.app.ProgressDialog;
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
 import android.nfc.Tag;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
@@ -13,6 +15,8 @@ import android.view.View;
 
 import com.google.gson.Gson;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import cys.share.image.Constant;
@@ -28,7 +32,10 @@ import cys.share.image.entity.TagContent;
 import cys.share.image.entity.User;
 import cys.share.image.entity.realm.MyUploadImageRealm;
 import cys.share.image.imagepicker.PhotoPickerActivity;
+import rx.Observable;
 import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Administrator on 2016/11/2.
@@ -37,9 +44,12 @@ import rx.Subscriber;
 public class ReleaseActivity extends AppCompatActivity {
 
     private ActivityReleaseBinding mBinding;
-    private List<String> mImagePaths;
+    private List<String> mImagePaths,mRealImagePaths;
     private UploadImageAdapter adapter;
     String imgsId ="";
+    private Observable mObservable;
+    private Subscriber mSubscreiber;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,17 +57,55 @@ public class ReleaseActivity extends AppCompatActivity {
         mImagePaths = getIntent().getStringArrayListExtra(PhotoPickerActivity.EXTRA_RESULT);
         adapter = new UploadImageAdapter(this,mImagePaths);
         mBinding.gridView.setAdapter(adapter);
+        Snackbar.make(mBinding.getRoot(),"图片处理成功",Snackbar.LENGTH_SHORT).show();
         mBinding.button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                _uploadImg();
+            public void onClick(final View view) {
+                mObservable = createObservable();
+                mObservable.subscribe(new Subscriber<String>() {
+                    @Override
+                    public void onCompleted() {
+                        Snackbar.make(mBinding.getRoot(),"图片处理成功",Snackbar.LENGTH_SHORT).show();
+                        _uploadImg();
+                    }
+                    @Override
+                    public void onError(Throwable e) {}
+                    @Override
+                    public void onNext(String o) { }
+                });
+                _public();
             }
         });
+
+
+
+
+//        ShareImageAuxiliaryTool.handleImages(mImagePaths.get(0));
+    }
+
+
+
+    private Observable createObservable(){
+        return Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+                mRealImagePaths = new ArrayList<String>();
+                for (String path:mImagePaths) {
+                    mRealImagePaths.add(ShareImageAuxiliaryTool.handleImages(ReleaseActivity.this, path));
+                }
+                subscriber.onCompleted();
+            }
+        }).observeOn(Schedulers.io())
+        .subscribeOn(AndroidSchedulers.mainThread());
+
     }
 
     private void _uploadImg(){
         imgsId = "";
-        ShareImageApi.uploadImages(mImagePaths, ((ShareImageApplication)getApplication()).getToken(), new Subscriber<MyUploadImage>() {
+        if(mRealImagePaths==null){
+            return;
+        }
+        ShareImageApi.uploadImages(mRealImagePaths, ((ShareImageApplication)getApplication()).getToken(), new Subscriber<MyUploadImage>() {
             @Override
             public void onCompleted() {
                 _public();
@@ -78,6 +126,7 @@ public class ReleaseActivity extends AppCompatActivity {
     }
 
     private void _public(){
+
         ShareImageApi._public(((ShareImageApplication)getApplication()).getToken(),imgsId,mBinding.etContext.getText().toString(),mBinding.etTag.getText().toString(), new Subscriber<TagContent>() {
             @Override
             public void onCompleted() {
