@@ -1,6 +1,8 @@
 package cys.share.image.activity;
 
+import android.app.ProgressDialog;
 import android.databinding.DataBindingUtil;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -22,6 +24,7 @@ import cys.share.image.auxiliary.ShareImageAuxiliaryTool;
 import cys.share.image.database.ShareImageRealm;
 import cys.share.image.databinding.ActivityReleaseBinding;
 import cys.share.image.entity.MyUploadImage;
+import cys.share.image.entity.TagContent;
 import cys.share.image.entity.User;
 import cys.share.image.entity.realm.MyUploadImageRealm;
 import cys.share.image.imagepicker.PhotoPickerActivity;
@@ -36,6 +39,7 @@ public class ReleaseActivity extends AppCompatActivity {
     private ActivityReleaseBinding mBinding;
     private List<String> mImagePaths;
     private UploadImageAdapter adapter;
+    String imgsId ="";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,43 +50,50 @@ public class ReleaseActivity extends AppCompatActivity {
         mBinding.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ShareImageApi.uploadImages(mImagePaths, ((ShareImageApplication)getApplication()).getToken(), new Subscriber<MyUploadImage>() {
-                    @Override
-                    public void onCompleted() {
-                        ShareImageAuxiliaryTool.log("onCompleted");
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        ShareImageAuxiliaryTool.log(e.getMessage());
-                    }
-
-                    @Override
-                    public void onNext(MyUploadImage myUploadImage) {
-                        ShareImageAuxiliaryTool.log(new Gson().toJson(myUploadImage));
-                    }
-                },mHandler);
-
-//                ShareImageApi.uploadImage(mImagePaths.get(0), "xFNuCZhGRwW5KE9tUA8tPndZOxChcAVY", new Subscriber<MyUploadImage>() {
-//                    @Override
-//                    public void onCompleted() {
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        ShareImageAuxiliaryTool.log(mImagePaths.toString());
-//                    }
-//
-//                    @Override
-//                    public void onNext(MyUploadImage myUploadImageRealm) {
-//                        ShareImageAuxiliaryTool.log(mImagePaths.toString());
-//                    }
-//                },mHandler,0);
+                _uploadImg();
             }
         });
     }
 
+    private void _uploadImg(){
+        imgsId = "";
+        ShareImageApi.uploadImages(mImagePaths, ((ShareImageApplication)getApplication()).getToken(), new Subscriber<MyUploadImage>() {
+            @Override
+            public void onCompleted() {
+                _public();
+                ShareImageAuxiliaryTool.log("onCompleted");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                ShareImageAuxiliaryTool.log(e.getMessage());
+            }
+
+            @Override
+            public void onNext(MyUploadImage myUploadImage) {
+                imgsId += (myUploadImage.getId()+",");
+                ShareImageAuxiliaryTool.log(new Gson().toJson(myUploadImage));
+            }
+        },mHandler);
+    }
+
+    private void _public(){
+        ShareImageApi._public(((ShareImageApplication)getApplication()).getToken(),imgsId,mBinding.etContext.getText().toString(),mBinding.etTag.getText().toString(), new Subscriber<TagContent>() {
+            @Override
+            public void onCompleted() {
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                ShareImageAuxiliaryTool.log(e.getMessage());
+            }
+
+            @Override
+            public void onNext(TagContent tagContent) {
+                ShareImageAuxiliaryTool.log(tagContent.toString());
+            }
+        });
+    }
     @Override
     protected void onResume() {
         super.onResume();

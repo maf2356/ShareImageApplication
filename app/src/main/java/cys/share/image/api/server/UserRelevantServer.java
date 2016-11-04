@@ -4,6 +4,7 @@ import java.util.List;
 
 import cys.share.image.entity.MyUploadImage;
 import cys.share.image.entity.ResponseMessage;
+import cys.share.image.entity.TagContent;
 import cys.share.image.entity.User;
 import cys.share.image.entity.realm.MyUploadImageRealm;
 import okhttp3.MultipartBody;
@@ -33,4 +34,8 @@ public interface UserRelevantServer {
     @POST("api/timeline/uploadImage")
     Observable<MyUploadImage> uploadImage(@Part("token") RequestBody token,
                                           @Part MultipartBody.Part file);
+
+    @POST("api/timeline/public")
+    Observable<TagContent> publicTagContent(@Query("token") String token,@Query("imageIds") String imgIds,@Query("content")String content,@Query("tags")String tags);
+
 }

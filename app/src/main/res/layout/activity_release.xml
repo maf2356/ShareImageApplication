@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
 
 
@@ -34,11 +35,27 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
     </RelativeLayout>
-    <EditText
-        android:id="@+id/et_context"
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/etContext"
+        android:layout_margin="@dimen/app_margin"
         android:layout_width="match_parent"
-        android:visibility="gone"
-        android:layout_height="100dp" />
+        app:met_maxCharacters="80"
+        android:textSize="@dimen/app_text_size"
+        app:met_floatingLabelText="@string/say_something"
+        app:met_floatingLabel="normal"
+        android:layout_height="wrap_content" />
+
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/app_margin"
+        android:textSize="@dimen/app_text_size"
+        android:hint="@string/add_tags_hint"
+        app:met_floatingLabelText="@string/add_tags_hint"
+        app:met_floatingLabel="normal"
+        android:id="@+id/etTag" />
+
     <GridView
         android:id="@+id/gridView"
         android:layout_width="match_parent"

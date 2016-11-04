@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.github.florent37.materialviewpager.MaterialViewPager;
@@ -89,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+//        mMaterialViewPager.getPagerTitleStrip().setVisibility(View.INVISIBLE);
 //        toolbar = mMaterialViewPager.getToolbar();
 //        if (toolbar != null) {
 //            setSupportActionBar(toolbar);
