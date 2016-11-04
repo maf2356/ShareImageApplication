@@ -8,12 +8,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.icu.text.DateFormat;
+import android.media.ExifInterface;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.WindowManager;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -74,7 +83,73 @@ public class ShareImageAuxiliaryTool {
             if(hasPermissions!= PackageManager.PERMISSION_GRANTED){
                 context.requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},0);
             }
+
+            int hasWritePermissions = context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            if(hasPermissions!= PackageManager.PERMISSION_GRANTED){
+                context.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},0);
+            }
         }
     }
+
+
+    public static String handleImages(Context context,String imgpath){
+        String path = imgpath;
+        String name = "";
+        String[] split = imgpath.split("/");
+        name = split[split.length-1];
+        File file = new File(context.getApplicationContext().getExternalFilesDir(null)+File.separator+name);
+        Bitmap bm = BitmapFactory.decodeFile(imgpath);
+        int digree = 0;
+        ExifInterface exif = null;
+        try {
+            exif = new ExifInterface(imgpath);
+        } catch (IOException e) {
+            e.printStackTrace();
+            exif = null;
+        }
+        if (exif != null) {
+            // 读取图片中相机方向信息
+            int ori = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                    ExifInterface.ORIENTATION_UNDEFINED);
+            // 计算旋转角度
+            switch (ori) {
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    digree = 90;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    digree = 180;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    digree = 270;
+                    break;
+                default:
+                    digree = 0;
+                    break;
+            }
+        }
+        if (digree != 0) {
+            // 旋转图片
+            Matrix m = new Matrix();
+            m.postRotate(digree);
+            bm = Bitmap.createBitmap(bm, 0, 0, bm.getWidth(),
+                    bm.getHeight(), m, true);
+            try {
+                file.createNewFile();
+                BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
+                bm.compress(Bitmap.CompressFormat.JPEG,100,bos);
+                bos.flush();
+                bos.close();
+                path = file.getPath();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        return path;
+    }
+
 
 }
