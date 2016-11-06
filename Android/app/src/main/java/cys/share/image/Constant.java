@@ -11,4 +11,6 @@ public class Constant {
     public static final String ALLTAGS = "全部";
     public static final int LOGIN_SUCCESS = 1;
     public static final int UPLOAD_WHAT = 2;
+    public static final String REFRESH_ACTION = "refresh_action";
+
 }

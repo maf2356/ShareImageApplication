@@ -14,6 +14,8 @@
     <dimen name="user_login_register_text_margin">3dp</dimen>
     <dimen name="user_login_register_margin">10dp</dimen>
 
+    <dimen name="viewpager_headerHeight">200dp</dimen>
+    
     <dimen name="user_login_register_text_hints">24dp</dimen>
     <dimen name="button_height">36dp</dimen>
     <dimen name="button_text_size">14dp</dimen>
@@ -25,6 +27,7 @@
     <dimen name="user_drawer_item_height">48dp</dimen>
 
     <dimen name="app_margin">16dp</dimen>
+    <dimen name="app_margin_small">5dp</dimen>
     <dimen name="app_text_size">13sp</dimen>
 
     <dimen name="folder_padding" >10dp</dimen>

@@ -1,6 +1,9 @@
 package cys.share.image.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
@@ -14,7 +17,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.github.florent37.materialviewpager.MaterialViewPager;
@@ -24,6 +26,7 @@ import java.util.List;
 
 import cys.share.image.Constant;
 import cys.share.image.R;
+import cys.share.image.adapter.ShareImageFragmentStatePagerAdapter;
 import cys.share.image.auxiliary.ShareImageAuxiliaryTool;
 import cys.share.image.database.ShareImageRealm;
 import cys.share.image.databinding.ActivityMainBinding;
@@ -49,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     ShareImageEventListener mEventListener;
     User mUser = new User();
     Toolbar toolbar;
+    ShareImageFragmentStatePagerAdapter mFragmentStatePagerAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,29 +113,11 @@ public class MainActivity extends AppCompatActivity {
 
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawer,toolbar, 0, 0);
         mDrawer.setDrawerListener(mDrawerToggle);
-        mMaterialViewPager.getViewPager().setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
-
-            @Override
-            public Fragment getItem(int position) {
-                return GenericFragment.newInstance(getPageTitle(position).toString());
-            }
-
-            @Override
-            public int getCount() {
-                return mNavtags.size();
-            }
-
-            @Override
-            public CharSequence getPageTitle(int position) {
-                if (position == 0) {
-                    return Constant.ALLTAGS;
-                }
-                return mNavtags.get(position).getName();
-            }
-        });
-
+        mFragmentStatePagerAdapter = new ShareImageFragmentStatePagerAdapter(getSupportFragmentManager(), mNavtags);
+        mMaterialViewPager.getViewPager().setAdapter(mFragmentStatePagerAdapter);
         mMaterialViewPager.getViewPager().setOffscreenPageLimit(mMaterialViewPager.getViewPager().getAdapter().getCount());
         mMaterialViewPager.getPagerTitleStrip().setViewPager(mMaterialViewPager.getViewPager());
+
         mMaterialViewPager.setMaterialViewPagerListener(new MaterialViewPager.Listener() {
             @Override
             public HeaderDesign getHeaderDesign(int page) {
@@ -145,8 +131,15 @@ public class MainActivity extends AppCompatActivity {
         if(user!=null){
             mBinding.setUser(user);
         }
-        mDrawer.openDrawer(mDrawerLayout);
+//        mDrawer.openDrawer(mDrawerLayout);
         mBinding.setListener(mEventListener);
+        registerRefreshReceiver();
+
+    }
+
+    public void registerRefreshReceiver() {
+        IntentFilter filter = new IntentFilter(Constant.REFRESH_ACTION);
+        registerReceiver(onRefreshReceiver, filter);
     }
 
     public int getStatusBarHeight() {
@@ -163,13 +156,6 @@ public class MainActivity extends AppCompatActivity {
     public void mainLogin(View view){
         Intent intent = new Intent(this,LoginActivity.class);
         startActivityForResult(intent,Constant.LOGIN_SUCCESS);
-    }
-    //此方法定义Menu的布局样式，返回false则不显示Menu
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
     }
 
     @Override
@@ -199,5 +185,21 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         return true;
+    }
+
+    BroadcastReceiver onRefreshReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(mFragmentStatePagerAdapter!=null){
+                mFragmentStatePagerAdapter.getItem(mMaterialViewPager.getViewPager().getCurrentItem()).onRefresh();
+            }
+
+        }
+    };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(onRefreshReceiver);
     }
 }

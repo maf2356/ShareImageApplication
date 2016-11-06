@@ -42,4 +42,16 @@ public class LargeViewActivity extends AppCompatActivity{
         intent.putExtra(LargeViewActivity.EXTRA_TAGCONTENT, item);
         return intent;
     }
+
+    @Override
+    public void onBackPressed() {
+        mPhotoViewAttacher.cleanup();
+        super.onBackPressed();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mPhotoViewAttacher.cleanup();
+    }
 }

@@ -9,6 +9,8 @@ import android.widget.Toast;
 
 import com.kogitune.activity_transition.ActivityTransitionLauncher;
 import com.kogitune.activity_transition.fragment.FragmentTransitionLauncher;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import cys.share.image.R;
 import cys.share.image.activity.LargeViewActivity;
@@ -31,15 +33,27 @@ public class ShareImageEventListener {
 
     }
 
-    public void showLargeView(View view, FragmentActivity activity, TagContent item){
-        Intent intent = LargeViewActivity.newIntent(activity, item);
-        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                activity, view, LargeViewActivity.TRANSIT_PIC);
-        try {
-            ActivityCompat.startActivity(activity, intent, optionsCompat.toBundle());
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-            activity.startActivity(intent);
-        }
+    public void showLargeView(final View view, final FragmentActivity activity, final TagContent item){
+
+        Picasso.with(view.getContext()).load(item.getCover().getMiddleUrl()).fetch(new Callback() {
+
+            @Override public void onSuccess() {
+                Intent intent = LargeViewActivity.newIntent(activity, item);
+                ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        activity, view, LargeViewActivity.TRANSIT_PIC);
+                try {
+                    ActivityCompat.startActivity(activity, intent, optionsCompat.toBundle());
+                } catch (IllegalArgumentException e) {
+                    e.printStackTrace();
+                    activity.startActivity(intent);
+                }
+            }
+
+
+            @Override public void onError() {
+            }
+        });
+
+
     }
 }

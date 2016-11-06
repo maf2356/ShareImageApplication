@@ -14,8 +14,10 @@ import android.graphics.Matrix;
 import android.icu.text.DateFormat;
 import android.media.ExifInterface;
 import android.os.Build;
+import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
 
 import java.io.BufferedOutputStream;
@@ -57,6 +59,27 @@ public class ShareImageAuxiliaryTool {
         return "总共有"+likeCount+"个人喜欢这张图片，一共有"+commentCount+"条评论";
     }
 
+    /**
+     *
+     * @param rootView
+     * @param message
+     * @param i  1 == long ,-1 short
+     * @param callback
+     */
+    public static void showSnackBar(View rootView, String message,int i, Snackbar.Callback callback){
+        Snackbar.make(rootView,message,i).setCallback(callback).show();
+    }
+
+    /**
+     *
+     * @param rootView
+     * @param i 1 == long ,-1 short
+     * @param message
+     */
+    public static void showSnackBar(View rootView, String message,int i){
+        Snackbar.make(rootView,message,i).setCallback(null).show();
+    }
+
     public static void checkUserState(Context ctx){
 //        SharedPreferences sharedPreferences = ctx.getSharedPreferences(Constant.PREFS_NAME, 0);
 //        String token = sharedPreferences.getString(Constant.TOKEN, "");
@@ -85,7 +108,7 @@ public class ShareImageAuxiliaryTool {
             }
 
             int hasWritePermissions = context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            if(hasPermissions!= PackageManager.PERMISSION_GRANTED){
+            if(hasWritePermissions!= PackageManager.PERMISSION_GRANTED){
                 context.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},0);
             }
         }
