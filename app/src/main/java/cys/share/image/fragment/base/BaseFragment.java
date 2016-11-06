@@ -4,6 +4,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import java.util.List;
 import cys.share.image.BaseFragmentDataBinding;
 import cys.share.image.R;
 import cys.share.image.auxiliary.MaterialViewPagerHeaderDecorator;
+import cys.share.image.auxiliary.ShareImageAuxiliaryTool;
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
 import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
 import jp.wasabeef.recyclerview.animators.FadeInAnimator;
@@ -30,6 +32,7 @@ public abstract class BaseFragment<T> extends Fragment{
 
     public List<T> mData  = new ArrayList<>();;
 
+    public int mPage = 1;
 
     public abstract void requestData();
 
@@ -39,6 +42,7 @@ public abstract class BaseFragment<T> extends Fragment{
 
     public BaseFragmentDataBinding mDataBinding;
 
+    private SwipeRefreshLayout.OnRefreshListener listener;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -56,8 +60,31 @@ public abstract class BaseFragment<T> extends Fragment{
         mDataBinding.recyclerView.setHasFixedSize(true);
         mDataBinding.recyclerView.addItemDecoration(new MaterialViewPagerHeaderDecorator());
         mDataBinding.recyclerView.setItemAnimator(new FadeInAnimator());
-
+        mDataBinding.swipeRefreshLayout.setProgressViewOffset(true,0, (int) getResources().getDimension(R.dimen.viewpager_headerHeight)/2);
+        listener = new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mPage = 1;
+                requestData();
+            }
+        };
+        mDataBinding.swipeRefreshLayout.setOnRefreshListener(listener);
         onViewCreated(savedInstanceState);
         requestData();
+    }
+
+    public void onRefresh(){
+
+        mDataBinding.swipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mDataBinding.swipeRefreshLayout.setRefreshing(true);
+                listener.onRefresh();
+            }
+        });
+    }
+
+    public void doneRefresh(){
+        mDataBinding.swipeRefreshLayout.setRefreshing(false);
     }
 }

@@ -29,7 +29,6 @@ import rx.Subscriber;
 public class GenericFragment extends BaseFragment<TagContent> {
 
 
-
     public static GenericFragment newInstance(String tag) {
         if(tag.equals(Constant.ALLTAGS)){
             tag = "";
@@ -54,6 +53,7 @@ public class GenericFragment extends BaseFragment<TagContent> {
 //        scaleAdapter.setFirstOnly(false);
 //        scaleAdapter.setInterpolator(new OvershootInterpolator());
                 mDataBinding.recyclerView.setAdapter(adapter);
+                doneRefresh();
             }
 
             @Override
@@ -75,5 +75,6 @@ public class GenericFragment extends BaseFragment<TagContent> {
 
     @Override
     public void onViewCreated(@Nullable Bundle savedInstanceState) {
+
     }
 }

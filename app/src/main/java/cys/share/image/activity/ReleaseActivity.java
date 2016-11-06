@@ -1,6 +1,7 @@
 package cys.share.image.activity;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.nfc.Tag;
@@ -11,6 +12,10 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.google.gson.Gson;
@@ -44,9 +49,9 @@ import rx.schedulers.Schedulers;
 public class ReleaseActivity extends AppCompatActivity {
 
     private ActivityReleaseBinding mBinding;
-    private List<String> mImagePaths,mRealImagePaths;
+    private List<String> mImagePaths, mRealImagePaths;
     private UploadImageAdapter adapter;
-    String imgsId ="";
+    String imgsId = "";
     private Observable mObservable;
     private Subscriber mSubscreiber;
 
@@ -55,57 +60,80 @@ public class ReleaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_release);
         mImagePaths = getIntent().getStringArrayListExtra(PhotoPickerActivity.EXTRA_RESULT);
-        adapter = new UploadImageAdapter(this,mImagePaths);
+        adapter = new UploadImageAdapter(this, mImagePaths);
         mBinding.gridView.setAdapter(adapter);
-        Snackbar.make(mBinding.getRoot(),"图片处理成功",Snackbar.LENGTH_SHORT).show();
-        mBinding.button.setOnClickListener(new View.OnClickListener() {
+        mBinding.toolbar.inflateMenu(R.menu.menu_release);
+        mBinding.toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
-            public void onClick(final View view) {
-                mObservable = createObservable();
-                mObservable.subscribe(new Subscriber<String>() {
-                    @Override
-                    public void onCompleted() {
-                        Snackbar.make(mBinding.getRoot(),"图片处理成功",Snackbar.LENGTH_SHORT).show();
-                        _uploadImg();
-                    }
-                    @Override
-                    public void onError(Throwable e) {}
-                    @Override
-                    public void onNext(String o) { }
-                });
-                _public();
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_public:
+                        ShareImageAuxiliaryTool.showSnackBar(mBinding.getRoot(),"正在发布，请稍等...",-1);
+                        mObservable = createObservable();
+                        mObservable.subscribe(new Subscriber<String>() {
+                            @Override
+                            public void onCompleted() {
+                                _uploadImg();
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                            }
+
+                            @Override
+                            public void onNext(String o) {
+                            }
+                        });
+                        break;
+                }
+                return false;
             }
         });
+//        mBinding.button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(final View view) {
+//                mObservable = createObservable();
+//                mObservable.subscribe(new Subscriber<String>() {
+//                    @Override
+//                    public void onCompleted() {
+//                        Snackbar.make(mBinding.getRoot(),"图片处理成功",Snackbar.LENGTH_SHORT).show();
+//                        _uploadImg();
+//                    }
+//                    @Override
+//                    public void onError(Throwable e) {}
+//                    @Override
+//                    public void onNext(String o) { }
+//                });
+//            }
+//        });
 
-
-
-
+        mBinding.etTag.setTagsTextColor(R.color.background);
 //        ShareImageAuxiliaryTool.handleImages(mImagePaths.get(0));
     }
 
 
-
-    private Observable createObservable(){
+    private Observable createObservable() {
         return Observable.create(new Observable.OnSubscribe<String>() {
             @Override
             public void call(Subscriber<? super String> subscriber) {
                 mRealImagePaths = new ArrayList<String>();
-                for (String path:mImagePaths) {
+                for (String path : mImagePaths) {
                     mRealImagePaths.add(ShareImageAuxiliaryTool.handleImages(ReleaseActivity.this, path));
                 }
                 subscriber.onCompleted();
             }
         }).observeOn(Schedulers.io())
-        .subscribeOn(AndroidSchedulers.mainThread());
+                .subscribeOn(AndroidSchedulers.mainThread());
 
     }
 
-    private void _uploadImg(){
+    private void _uploadImg() {
+        ShareImageAuxiliaryTool.showSnackBar(mBinding.getRoot(),"正在上传图片，请稍等...",0);
         imgsId = "";
-        if(mRealImagePaths==null){
+        if (mRealImagePaths == null) {
             return;
         }
-        ShareImageApi.uploadImages(mRealImagePaths, ((ShareImageApplication)getApplication()).getToken(), new Subscriber<MyUploadImage>() {
+        ShareImageApi.uploadImages(mRealImagePaths, ((ShareImageApplication) getApplication()).getToken(), new Subscriber<MyUploadImage>() {
             @Override
             public void onCompleted() {
                 _public();
@@ -119,17 +147,25 @@ public class ReleaseActivity extends AppCompatActivity {
 
             @Override
             public void onNext(MyUploadImage myUploadImage) {
-                imgsId += (myUploadImage.getId()+",");
+                imgsId += (myUploadImage.getId() + ",");
                 ShareImageAuxiliaryTool.log(new Gson().toJson(myUploadImage));
             }
-        },mHandler);
+        }, mHandler);
     }
 
-    private void _public(){
-
-        ShareImageApi._public(((ShareImageApplication)getApplication()).getToken(),imgsId,mBinding.etContext.getText().toString(),mBinding.etTag.getText().toString(), new Subscriber<TagContent>() {
+    private void _public() {
+        ShareImageApi._public(((ShareImageApplication) getApplication()).getToken(), imgsId, mBinding.etContext.getText().toString(), mBinding.etTag.getText().toString(), new Subscriber<TagContent>() {
             @Override
             public void onCompleted() {
+                ShareImageAuxiliaryTool.showSnackBar(mBinding.getRoot(), "发布成功",-1, new Snackbar.Callback() {
+                    @Override
+                    public void onDismissed(Snackbar snackbar, int event) {
+                        super.onDismissed(snackbar, event);
+                        sendBroadcast(new Intent(Constant.REFRESH_ACTION));
+                        ReleaseActivity.this.finish();
+                    }
+                });
+
             }
 
             @Override
@@ -143,11 +179,13 @@ public class ReleaseActivity extends AppCompatActivity {
             }
         });
     }
+
     @Override
     protected void onResume() {
         super.onResume();
 
     }
+
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -159,14 +197,14 @@ public class ReleaseActivity extends AppCompatActivity {
 //                    }
 //                    break;
 //            }
-            adapter.notifyUploadProgressSetChanged(msg.what,msg.arg1);
-
-
-
-
-
+            adapter.notifyUploadProgressSetChanged(msg.what, msg.arg1);
         }
     };
 
 
+    @Override
+    public void onBackPressed() {
+        setResult(111);
+        this.finish();
+    }
 }

@@ -57,7 +57,7 @@ public class CircleImageView extends ImageView {
         if (drawable.getClass() == NinePatchDrawable.class)
             return;
         Bitmap b = ((BitmapDrawable) drawable).getBitmap();
-        Bitmap bitmap = b.copy(Bitmap.Config.ARGB_8888, true);
+        Bitmap bitmap = b.copy(Config.RGB_565, true);
         defaultWidth = getWidth();
         defaultHeight = getHeight();
         //计算显示圆形的半径，为保证圆形，取图片的长宽小的一半作为圆形
@@ -85,7 +85,7 @@ public class CircleImageView extends ImageView {
         //创建一个我们输出的对应
         Bitmap output = Bitmap.createBitmap(scaledSrcBmp.getWidth(),
                 scaledSrcBmp.getHeight(),
-                Config.ARGB_8888);
+                Config.RGB_565);
         //在output上进行绘画
         Canvas canvas = new Canvas(output);
         //创建裁剪的矩形

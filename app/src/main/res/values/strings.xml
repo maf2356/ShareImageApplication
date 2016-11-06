@@ -8,6 +8,7 @@
     <string name="image">图片</string>
     <string name="all_image">所有图片</string>
     <string name="preview">预览</string>
+    <string name="_public">发布</string>
     <string name="msg_no_camera">无法启用系统相机</string>
     <string name="msg_amount_limit">已经达到最高选择数量</string>
     <string name="done">完成</string>
@@ -20,5 +21,5 @@
     <string name="cancel">取消</string>
     <string name="undo">撤消</string>
     <string name="say_something">说点什么吧</string>
-    <string name="add_tags_hint">#美女 #游记 #动物 添加相关标签,用逗号隔开</string>
+    <string name="add_tags_hint">添加相关标签,用空格或者回车隔开</string>
 </resources>
