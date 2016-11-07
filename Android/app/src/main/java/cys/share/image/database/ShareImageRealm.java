@@ -8,6 +8,7 @@ import java.util.Objects;
 
 import cys.share.image.auxiliary.ShareImageAuxiliaryTool;
 import cys.share.image.entity.NavTag;
+import cys.share.image.entity.TContent;
 import cys.share.image.entity.User;
 import cys.share.image.entity.realm.NavTagRealm;
 import cys.share.image.entity.realm.UserRealm;
@@ -45,6 +46,10 @@ public class ShareImageRealm {
         if (mRealm == null) {
             mRealm = Realm.getInstance(new RealmConfiguration.Builder(ctx).name("shareimage.realm").build());
         }
+    }
+
+    public void saveTContent(TContent tContent){
+
     }
 
     public void saveUserInfo(User user){

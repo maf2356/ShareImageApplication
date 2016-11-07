@@ -16,6 +16,7 @@ import cys.share.image.api.ShareImageApi;
 import cys.share.image.auxiliary.ShareImageAuxiliaryTool;
 import cys.share.image.database.ShareImageRealm;
 import cys.share.image.entity.NavTag;
+import cys.share.image.entity.TContent;
 import cys.share.image.entity.TagContent;
 import cys.share.image.entity.a;
 import cys.share.image.fragment.base.BaseFragment;
@@ -26,7 +27,7 @@ import rx.Subscriber;
 /**
  * Created by Administrator on 2016/10/27.
  */
-public class GenericFragment extends BaseFragment<TagContent> {
+public class GenericFragment extends BaseFragment<TContent> {
 
 
     public static GenericFragment newInstance(String tag) {
@@ -44,7 +45,7 @@ public class GenericFragment extends BaseFragment<TagContent> {
     @Override
     public void requestData() {
         String tag = getArguments().getString("tag");
-        ShareImageApi.getTagList(getToken(), tag, 1, new Subscriber<List<TagContent>>() {
+        ShareImageApi.getTagList(getToken(), tag, 1, new Subscriber<TagContent>() {
             @Override
             public void onCompleted() {
                 GenericAdapter adapter = new GenericAdapter(getActivity(),mData);
@@ -61,8 +62,8 @@ public class GenericFragment extends BaseFragment<TagContent> {
             }
 
             @Override
-            public void onNext(List<TagContent> tagContents) {
-                mData = tagContents;
+            public void onNext(TagContent tagContents) {
+                mData = tagContents.getDatas();
             }
         });
 

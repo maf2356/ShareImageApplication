@@ -13,6 +13,7 @@ import com.squareup.picasso.Picasso;
 
 import cys.share.image.R;
 import cys.share.image.databinding.ActivityLargeviewingBinding;
+import cys.share.image.entity.TContent;
 import cys.share.image.entity.TagContent;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
@@ -32,12 +33,12 @@ public class LargeViewActivity extends AppCompatActivity{
         mBingding = DataBindingUtil.setContentView(this, R.layout.activity_largeviewing);
 
         ViewCompat.setTransitionName(mBingding.img, TRANSIT_PIC);
-        TagContent item = (TagContent) getIntent().getSerializableExtra(EXTRA_TAGCONTENT);
+        TContent item = (TContent) getIntent().getSerializableExtra(EXTRA_TAGCONTENT);
         mBingding.setItem(item);
         mPhotoViewAttacher = new PhotoViewAttacher(mBingding.img);
     }
 
-    public static Intent newIntent(Context context, TagContent item) {
+    public static Intent newIntent(Context context, TContent item) {
         Intent intent = new Intent(context, LargeViewActivity.class);
         intent.putExtra(LargeViewActivity.EXTRA_TAGCONTENT, item);
         return intent;

@@ -134,14 +134,11 @@ public class MainActivity extends BaseActivity {
         User user = getUser();
         if(user!=null){
             mBinding.setUser(user);
-            Picasso.with(this).load(user.getAvatar()).into(mBinding.avatar);
         }
         mBinding.setActivity(this);
 //        mDrawer.openDrawer(mDrawerLayout);
         mBinding.setListener(mEventListener);
         registerRefreshReceiver();
-
-
     }
 
     public void registerRefreshReceiver() {
@@ -173,7 +170,7 @@ public class MainActivity extends BaseActivity {
             if(user!=null){
                 mBinding.setUser(user);
             }
-        }else if(requestCode == Constant.MODIFY_SUCCESS){
+        }else if(requestCode == Constant.MODIFYCODE&&resultCode==Constant.MODIFY_AVATAR){
             //uploada vatar
             final ProgressDialog 请稍等 = ShareImageAuxiliaryTool.createProgressDialog(MainActivity.this, "请稍等", "正在上传...");
             ShareImageApi.modifyAvatar(getUser().getToken(), data.getStringArrayListExtra(PhotoPickerActivity.EXTRA_RESULT).get(0), new Subscriber<User>() {
@@ -194,6 +191,9 @@ public class MainActivity extends BaseActivity {
                     }
                 }
             },null,0);
+        }else if(requestCode == Constant.MODIFYCODE&&resultCode==Constant.MODIFY_NICKNAME){
+            mBinding.setUser(getUser());
+            sendBroadcast(new Intent(Constant.REFRESH_ACTION));
         }
     }
 

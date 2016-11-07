@@ -21,7 +21,6 @@ public class BaseActivity extends AppCompatActivity {
         if(mUser == null){
             mUser = ShareImageRealm.getInstance(this).queryUserInfo();
         }
-        ShareImageAuxiliaryTool.log(mUser==null?"token:null":mUser.getToken());
         return mUser;
     }
 

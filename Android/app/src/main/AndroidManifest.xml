@@ -33,6 +33,13 @@
             android:configChanges="orientation|keyboardHidden"
             android:theme="@style/release.style"
             />
+
+        <activity android:name=".activity.ShareImageUserModifyActivity"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden"
+            android:configChanges="orientation|keyboardHidden"
+            android:theme="@style/release.style"
+            />
+
         <activity android:name=".activity.LoginActivity">
         </activity>
         <activity android:name=".activity.LargeViewActivity"

@@ -16,6 +16,7 @@ import cys.share.image.BR;
 import cys.share.image.R;
 import cys.share.image.databinding.GenericItemBinding;
 import cys.share.image.entity.Cover;
+import cys.share.image.entity.TContent;
 import cys.share.image.entity.TagContent;
 import cys.share.image.listener.ShareImageEventListener;
 
@@ -25,10 +26,10 @@ import cys.share.image.listener.ShareImageEventListener;
 public class GenericAdapter extends RecyclerView.Adapter<GenericAdapter.BindingHolder>{
 
 
-    private List<TagContent> mData = new ArrayList<>();
+    private List<TContent> mData = new ArrayList<>();
     private ShareImageEventListener mListener;
     private FragmentActivity mActivity;
-    public GenericAdapter(FragmentActivity activity,List<TagContent> data){
+    public GenericAdapter(FragmentActivity activity,List<TContent> data){
         this.mActivity = activity;
         this.mData = data;
         mListener = new ShareImageEventListener();

@@ -275,7 +275,7 @@ public class PhotoPickerActivity extends AppCompatActivity {
         resultList.add(path);
         data.putStringArrayListExtra(EXTRA_RESULT, resultList);
         if(from == Constant.PHOTOPICKER_AVATAR){
-            setResult(Constant.MODIFY_SUCCESS,data);
+            setResult(Constant.MODIFY_AVATAR,data);
         }else {
             setResult(RESULT_OK, data);
         }

@@ -13,5 +13,5 @@ import rx.Observable;
 public interface TagListServer {
 
     @GET("api/timeline/list")
-    Observable<List<TagContent>> getTagList(@Query("token") String token, @Query("tag")String tag, @Query("page") int page);
+    Observable<TagContent> getTagList(@Query("token") String token, @Query("tag")String tag, @Query("page") int page);
 }
