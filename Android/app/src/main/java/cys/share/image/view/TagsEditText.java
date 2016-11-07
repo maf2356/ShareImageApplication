@@ -39,6 +39,8 @@ import android.widget.TextView;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -55,7 +57,7 @@ import cys.share.image.view.utils.ResourceUtils;
  */
 public class TagsEditText extends MaterialEditText {
 
-    private static final String SEPARATOR = " ";
+    public static final String SEPARATOR = " ";
     public static final String NEW_LINE = "\n";
     public static final String COMMA_CN = "，";
     public static final String COMMA_EN = "，";

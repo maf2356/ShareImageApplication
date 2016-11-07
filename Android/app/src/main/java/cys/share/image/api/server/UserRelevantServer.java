@@ -15,6 +15,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
 
@@ -37,5 +38,9 @@ public interface UserRelevantServer {
 
     @POST("api/timeline/public")
     Observable<TagContent> publicTagContent(@Query("token") String token,@Query("imageIds") String imgIds,@Query("content")String content,@Query("tags")String tags);
+
+    @Multipart
+    @POST("api/user/avatar")
+    Observable<User> modifyAvatar(@Part("token") RequestBody token,@Part MultipartBody.Part file);
 
 }

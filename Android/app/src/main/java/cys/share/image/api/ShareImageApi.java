@@ -118,6 +118,21 @@ public class ShareImageApi {
                 .subscribe(subscriber);
     }
 
+    public static void modifyAvatar(String token,String path,Subscriber<User> subscriber,Handler handler,int what){
+        UserRelevantServer userRelevantServer = createServer(UserRelevantServer.class);
+        File file = new File(path);
+        RequestBody rb = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+//        UploadFileRequestBody ufb = new UploadFileRequestBody(file,new DefaultProgressListener(handler, what));
+        MultipartBody.Part body =
+                MultipartBody.Part.createFormData("avatarFile", file.getName(), rb);
+        RequestBody tokenBody =
+                RequestBody.create(
+                        MediaType.parse("multipart/form-data"), token);
+        userRelevantServer.modifyAvatar(tokenBody,body) .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
 
     public static void uploadImages(List<String> filePath, String token, Subscriber<MyUploadImage> subscriber, Handler handler){
         List<Observable<MyUploadImage>> observableList = new ArrayList<>();

@@ -30,6 +30,7 @@ import java.util.Date;
 
 import cys.share.image.Constant;
 import cys.share.image.activity.LoginActivity;
+import cys.share.image.view.TagsEditText;
 
 /**
  * Created by Administrator on 2016/10/27.
@@ -174,5 +175,19 @@ public class ShareImageAuxiliaryTool {
         return path;
     }
 
+
+    public static String getTags(String sTags){
+        String _publicTags = "";
+        String [] separatorTags = sTags.split(TagsEditText.SEPARATOR);
+        for (String tag:
+                separatorTags) {
+            _publicTags+= tag+",";
+        }
+        if(_publicTags.endsWith(",")){
+            _publicTags = _publicTags.substring(0,_publicTags.length()-1);
+        }
+        ShareImageAuxiliaryTool.log(_publicTags);
+        return _publicTags;
+    }
 
 }

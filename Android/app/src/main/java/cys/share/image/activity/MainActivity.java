@@ -1,5 +1,6 @@
 package cys.share.image.activity;
 
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -21,27 +22,31 @@ import android.widget.Toast;
 
 import com.github.florent37.materialviewpager.MaterialViewPager;
 import com.github.florent37.materialviewpager.header.HeaderDesign;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import cys.share.image.Constant;
 import cys.share.image.R;
 import cys.share.image.adapter.ShareImageFragmentStatePagerAdapter;
+import cys.share.image.api.ShareImageApi;
 import cys.share.image.auxiliary.ShareImageAuxiliaryTool;
 import cys.share.image.database.ShareImageRealm;
 import cys.share.image.databinding.ActivityMainBinding;
 import cys.share.image.entity.NavTag;
 import cys.share.image.entity.User;
 import cys.share.image.fragment.GenericFragment;
+import cys.share.image.imagepicker.PhotoPickerActivity;
 import cys.share.image.imagepicker.SelectModel;
 import cys.share.image.imagepicker.intent.PhotoPickerIntent;
 import cys.share.image.listener.ShareImageEventListener;
+import rx.Subscriber;
 
 
 /**
  * TODO
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     MaterialViewPager mMaterialViewPager;
     private DrawerLayout mDrawer;
@@ -50,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
     private View mDrawerLayout;
     ActivityMainBinding mBinding;
     ShareImageEventListener mEventListener;
-    User mUser = new User();
     Toolbar toolbar;
     ShareImageFragmentStatePagerAdapter mFragmentStatePagerAdapter;
     @Override
@@ -127,13 +131,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        User user = ShareImageRealm.getInstance(MainActivity.this).queryUserInfo();
+        User user = getUser();
         if(user!=null){
             mBinding.setUser(user);
+            Picasso.with(this).load(user.getAvatar()).into(mBinding.avatar);
         }
+        mBinding.setActivity(this);
 //        mDrawer.openDrawer(mDrawerLayout);
         mBinding.setListener(mEventListener);
         registerRefreshReceiver();
+
 
     }
 
@@ -162,11 +169,31 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == Constant.LOGIN_SUCCESS){
-            mUser = ShareImageRealm.getInstance(MainActivity.this).queryUserInfo();
-            if(mUser!=null){
-                mBinding.setUser(mUser);
+            User user = getUser();
+            if(user!=null){
+                mBinding.setUser(user);
             }
+        }else if(requestCode == Constant.MODIFY_SUCCESS){
+            //uploada vatar
+            final ProgressDialog 请稍等 = ShareImageAuxiliaryTool.createProgressDialog(MainActivity.this, "请稍等", "正在上传...");
+            ShareImageApi.modifyAvatar(getUser().getToken(), data.getStringArrayListExtra(PhotoPickerActivity.EXTRA_RESULT).get(0), new Subscriber<User>() {
+                @Override
+                public void onCompleted() {
+                    请稍等.dismiss();
+                }
 
+                @Override
+                public void onError(Throwable e) {
+                    请稍等.dismiss();
+                }
+
+                @Override
+                public void onNext(User user) {
+                    if(user!=null){
+                        mBinding.setUser(user);
+                    }
+                }
+            },null,0);
         }
     }
 

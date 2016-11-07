@@ -25,6 +25,10 @@ public class PhotoPickerIntent extends Intent {
         this.putExtra(PhotoPickerActivity.EXTRA_SELECT_COUNT, total);
     }
 
+    public void setFrom(int from){
+        this.putExtra(PhotoPickerActivity.EXTRA_FROM,from);
+    }
+
     /**
      * 选择
      * @param model
