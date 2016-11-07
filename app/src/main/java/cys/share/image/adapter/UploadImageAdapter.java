@@ -77,6 +77,7 @@ public class UploadImageAdapter extends BaseAdapter{
         dataBinding.shareImageProgressBar.setColor("#FF0FDF0F");
         dataBinding.shareImageProgressBar.setProgress(bean.progress);
         dataBinding.shareImageProgressBar.setOpacity(true);
+        dataBinding.shareImageProgressBar.showProgress(true);
         return dataBinding.getRoot();
     }
 

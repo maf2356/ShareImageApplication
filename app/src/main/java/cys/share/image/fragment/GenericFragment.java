@@ -44,7 +44,7 @@ public class GenericFragment extends BaseFragment<TagContent> {
     @Override
     public void requestData() {
         String tag = getArguments().getString("tag");
-        ShareImageApi.getTagList("xFNuCZhGRwW5KE9tUA8tPndZOxChcAVY", tag, 1, new Subscriber<List<TagContent>>() {
+        ShareImageApi.getTagList(getToken(), tag, 1, new Subscriber<List<TagContent>>() {
             @Override
             public void onCompleted() {
                 GenericAdapter adapter = new GenericAdapter(getActivity(),mData);

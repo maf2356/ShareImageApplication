@@ -51,6 +51,7 @@ public class LoginActivity extends AppCompatActivity{
             public void onCompleted() {
                 ((ShareImageApplication)LoginActivity.this.getApplication()).setLogin(true);
                 registerDialog.dismiss();
+                sendBroadcast(new Intent(Constant.REFRESH_ACTION));
                 LoginActivity.this.finish();
             }
 

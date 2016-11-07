@@ -37,6 +37,7 @@ import cys.share.image.entity.TagContent;
 import cys.share.image.entity.User;
 import cys.share.image.entity.realm.MyUploadImageRealm;
 import cys.share.image.imagepicker.PhotoPickerActivity;
+import cys.share.image.view.TagsEditText;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -46,7 +47,7 @@ import rx.schedulers.Schedulers;
  * Created by Administrator on 2016/11/2.
  */
 
-public class ReleaseActivity extends AppCompatActivity {
+public class ReleaseActivity extends BaseActivity {
 
     private ActivityReleaseBinding mBinding;
     private List<String> mImagePaths, mRealImagePaths;
@@ -68,7 +69,7 @@ public class ReleaseActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action_public:
-                        ShareImageAuxiliaryTool.showSnackBar(mBinding.getRoot(),"正在发布，请稍等...",-1);
+                        ShareImageAuxiliaryTool.showSnackBar(mBinding.getRoot(), "正在发布，请稍等...", -1);
                         mObservable = createObservable();
                         mObservable.subscribe(new Subscriber<String>() {
                             @Override
@@ -107,7 +108,9 @@ public class ReleaseActivity extends AppCompatActivity {
 //            }
 //        });
 
-        mBinding.etTag.setTagsTextColor(R.color.background);
+        mBinding.etTag.setTagsTextColor(R.color.tag_text_color);
+        mBinding.etTag.setTagsWithSpacesEnabled(true);
+        mBinding.etTag.setTagsBackground(R.color.tag_background);
 //        ShareImageAuxiliaryTool.handleImages(mImagePaths.get(0));
     }
 
@@ -128,12 +131,12 @@ public class ReleaseActivity extends AppCompatActivity {
     }
 
     private void _uploadImg() {
-        ShareImageAuxiliaryTool.showSnackBar(mBinding.getRoot(),"正在上传图片，请稍等...",0);
+        ShareImageAuxiliaryTool.showSnackBar(mBinding.getRoot(), "正在上传图片，请稍等...", 0);
         imgsId = "";
         if (mRealImagePaths == null) {
             return;
         }
-        ShareImageApi.uploadImages(mRealImagePaths, ((ShareImageApplication) getApplication()).getToken(), new Subscriber<MyUploadImage>() {
+        ShareImageApi.uploadImages(mRealImagePaths, getUser().getToken(), new Subscriber<MyUploadImage>() {
             @Override
             public void onCompleted() {
                 _public();
@@ -154,10 +157,14 @@ public class ReleaseActivity extends AppCompatActivity {
     }
 
     private void _public() {
-        ShareImageApi._public(((ShareImageApplication) getApplication()).getToken(), imgsId, mBinding.etContext.getText().toString(), mBinding.etTag.getText().toString(), new Subscriber<TagContent>() {
+        String content = mBinding.etContext.getText().toString();
+        String tags = ShareImageAuxiliaryTool.getTags(mBinding.etTag.getText().toString());
+
+
+        ShareImageApi._public(getUser().getToken(), imgsId, content, tags, new Subscriber<TagContent>() {
             @Override
             public void onCompleted() {
-                ShareImageAuxiliaryTool.showSnackBar(mBinding.getRoot(), "发布成功",-1, new Snackbar.Callback() {
+                ShareImageAuxiliaryTool.showSnackBar(mBinding.getRoot(), "发布成功", -1, new Snackbar.Callback() {
                     @Override
                     public void onDismissed(Snackbar snackbar, int event) {
                         super.onDismissed(snackbar, event);
@@ -189,14 +196,6 @@ public class ReleaseActivity extends AppCompatActivity {
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-//            final int msgWhat = Constant.UPLOAD_WHAT;
-//            switch (msg.what) {
-//                case msgWhat:
-//                    if (msg.arg1 > 0) {
-//                        ShareImageAuxiliaryTool.log(msg.arg1+"");
-//                    }
-//                    break;
-//            }
             adapter.notifyUploadProgressSetChanged(msg.what, msg.arg1);
         }
     };

@@ -12,11 +12,15 @@ import com.kogitune.activity_transition.fragment.FragmentTransitionLauncher;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import cys.share.image.Constant;
 import cys.share.image.R;
 import cys.share.image.activity.LargeViewActivity;
+import cys.share.image.activity.MainActivity;
 import cys.share.image.auxiliary.ShareImageAuxiliaryTool;
 import cys.share.image.entity.TagContent;
 import cys.share.image.fragment.LargeViewFragment;
+import cys.share.image.imagepicker.SelectModel;
+import cys.share.image.imagepicker.intent.PhotoPickerIntent;
 
 /**
  * Created by Administrator on 2016/10/29.
@@ -53,7 +57,13 @@ public class ShareImageEventListener {
             @Override public void onError() {
             }
         });
+    }
 
-
+    public void motifyAvatar(final View view,final FragmentActivity activity){
+        PhotoPickerIntent intent = new PhotoPickerIntent(view.getContext());
+        intent.setSelectModel(SelectModel.SINGLE);
+        intent.setShowCarema(true);
+        intent.setFrom(Constant.PHOTOPICKER_AVATAR);
+        activity.startActivityForResult(intent, Constant.MODIFY_SUCCESS);
     }
 }

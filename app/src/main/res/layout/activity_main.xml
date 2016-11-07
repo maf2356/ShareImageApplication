@@ -8,6 +8,10 @@
         <variable
             name="listener"
             type="cys.share.image.listener.ShareImageEventListener"></variable>
+
+        <variable
+            name="activity"
+            type="cys.share.image.activity.MainActivity"></variable>
     </data>
 <android.support.v4.widget.DrawerLayout
     android:id="@+id/drawerLayout"
@@ -62,12 +66,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
+
+            <cys.share.image.view.CircleImageView
                 android:layout_width="@dimen/user_drawer_avatar_size"
                 android:layout_height="@dimen/user_drawer_avatar_size"
                 android:id="@+id/avatar"
+                app:civ_border_color="#c2636161"
+                app:civ_border_width="1dp"
                 android:src="@mipmap/ic_launcher"
                 android:adjustViewBounds="true"
+                android:onClick="@{(view)->listener.motifyAvatar(view,activity)}"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/user_drawer_avatar_margin_top" />

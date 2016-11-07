@@ -18,6 +18,8 @@ import cys.share.image.BaseFragmentDataBinding;
 import cys.share.image.R;
 import cys.share.image.auxiliary.MaterialViewPagerHeaderDecorator;
 import cys.share.image.auxiliary.ShareImageAuxiliaryTool;
+import cys.share.image.database.ShareImageRealm;
+import cys.share.image.entity.User;
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
 import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
 import jp.wasabeef.recyclerview.animators.FadeInAnimator;
@@ -42,6 +44,8 @@ public abstract class BaseFragment<T> extends Fragment{
 
     public BaseFragmentDataBinding mDataBinding;
 
+    private User user;
+
     private SwipeRefreshLayout.OnRefreshListener listener;
     @Nullable
     @Override
@@ -54,6 +58,7 @@ public abstract class BaseFragment<T> extends Fragment{
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        user = ShareImageRealm.getInstance(view.getContext()).queryUserInfo();
         RecyclerView.LayoutManager layoutManager;
         layoutManager = new LinearLayoutManager(getActivity());
         mDataBinding.recyclerView.setLayoutManager(layoutManager);
@@ -82,6 +87,13 @@ public abstract class BaseFragment<T> extends Fragment{
                 listener.onRefresh();
             }
         });
+    }
+
+    public String getToken(){
+        if(user!=null){
+            return user.getToken();
+        }
+        return "";
     }
 
     public void doneRefresh(){

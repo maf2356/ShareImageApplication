@@ -15,4 +15,7 @@
     <color name="action_text_color_enabled" >#818585</color>
 
     <color name="photopicker_background">#181819</color>
+
+    <color name="tag_text_color">#181819</color>
+    <color name="tag_background">#45aacf</color>
 </resources>

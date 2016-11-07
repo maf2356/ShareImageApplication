@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import cys.share.image.Constant;
 import cys.share.image.R;
 import cys.share.image.activity.ReleaseActivity;
 import cys.share.image.imagepicker.intent.PhotoPreviewIntent;
@@ -48,6 +49,8 @@ public class PhotoPickerActivity extends AppCompatActivity {
     public static final int MODE_MULTI = 1;
     /** 最大图片选择次数，int类型 */
     public static final String EXTRA_SELECT_COUNT = "max_select_count";
+    /** 最大图片选择次数，int类型 */
+    public static final String EXTRA_FROM = "from";
     /** 默认最大照片数量 */
     public static final int DEFAULT_MAX_TOTAL= 9;
     /** 是否显示相机，boolean类型 */
@@ -78,7 +81,7 @@ public class PhotoPickerActivity extends AppCompatActivity {
     private ImageCaptureManager captureManager;
     private int mDesireImageCount;
     private ImageConfig imageConfig; // 照片配置
-
+    private int from;
     private ImageGridAdapter mImageAdapter;
     private FolderAdapter mFolderAdapter;
     private ListPopupWindow mFolderPopupWindow;
@@ -105,6 +108,8 @@ public class PhotoPickerActivity extends AppCompatActivity {
         // 图片选择模式
         final int mode = getIntent().getExtras().getInt(EXTRA_SELECT_MODE, MODE_SINGLE);
 
+        //from
+        from = getIntent().getExtras().getInt(EXTRA_FROM);
         // 默认选择
         if(mode == MODE_MULTI) {
             ArrayList<String> tmp = getIntent().getStringArrayListExtra(EXTRA_DEFAULT_SELECTED_LIST);
@@ -269,7 +274,11 @@ public class PhotoPickerActivity extends AppCompatActivity {
         Intent data = new Intent();
         resultList.add(path);
         data.putStringArrayListExtra(EXTRA_RESULT, resultList);
-        setResult(RESULT_OK, data);
+        if(from == Constant.PHOTOPICKER_AVATAR){
+            setResult(Constant.MODIFY_SUCCESS,data);
+        }else {
+            setResult(RESULT_OK, data);
+        }
         finish();
     }
 
