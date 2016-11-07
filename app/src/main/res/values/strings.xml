@@ -22,4 +22,6 @@
     <string name="undo">撤消</string>
     <string name="say_something">说点什么吧</string>
     <string name="add_tags_hint">添加相关标签,用回车隔开</string>
+    <string name="modify_user_nick_text">好的昵称可以让别人更好的记住你</string>
+    <string name="modify_user_nick_error_null">昵称不能为空</string>
 </resources>

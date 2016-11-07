@@ -43,4 +43,10 @@ public interface UserRelevantServer {
     @POST("api/user/avatar")
     Observable<User> modifyAvatar(@Part("token") RequestBody token,@Part MultipartBody.Part file);
 
+
+    @POST("api/user/changeInfo")
+    Observable<User> modifyUserNick(@Query("token")String token,@Query("nickName")String nickName);
+
+    @POST("api/user/changePassword")
+    Observable<ResponseMessage> modifyUserPassword(@Query("token")String token,@Query("password")String password);
 }

@@ -16,7 +16,10 @@ import cys.share.image.Constant;
 import cys.share.image.R;
 import cys.share.image.activity.LargeViewActivity;
 import cys.share.image.activity.MainActivity;
+import cys.share.image.activity.ShareImageUserModifyActivity;
+import cys.share.image.api.ShareImageApi;
 import cys.share.image.auxiliary.ShareImageAuxiliaryTool;
+import cys.share.image.entity.TContent;
 import cys.share.image.entity.TagContent;
 import cys.share.image.fragment.LargeViewFragment;
 import cys.share.image.imagepicker.SelectModel;
@@ -37,7 +40,7 @@ public class ShareImageEventListener {
 
     }
 
-    public void showLargeView(final View view, final FragmentActivity activity, final TagContent item){
+    public void showLargeView(final View view, final FragmentActivity activity, final TContent item){
 
         Picasso.with(view.getContext()).load(item.getCover().getMiddleUrl()).fetch(new Callback() {
 
@@ -64,6 +67,12 @@ public class ShareImageEventListener {
         intent.setSelectModel(SelectModel.SINGLE);
         intent.setShowCarema(true);
         intent.setFrom(Constant.PHOTOPICKER_AVATAR);
-        activity.startActivityForResult(intent, Constant.MODIFY_SUCCESS);
+        activity.startActivityForResult(intent, Constant.MODIFYCODE);
+    }
+
+    public void modifyUserNick(final View view,FragmentActivity activity){
+        Intent intent = new Intent(activity, ShareImageUserModifyActivity.class);
+        intent.putExtra(Constant.MODIFY,Constant.MODIFY_NICKNAME);
+        activity.startActivityForResult(intent,Constant.MODIFYCODE);
     }
 }

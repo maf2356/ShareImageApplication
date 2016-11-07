@@ -6,7 +6,7 @@
             type="String"></variable>
         <variable
             name="item"
-            type="cys.share.image.entity.TagContent"></variable>
+            type="cys.share.image.entity.TContent"></variable>
     </data>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"

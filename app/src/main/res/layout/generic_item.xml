@@ -6,7 +6,7 @@
         <import type="cys.share.image.auxiliary.ShareImageAuxiliaryTool"></import>
         <variable
             name="item"
-            type="cys.share.image.entity.TagContent"/>
+            type="cys.share.image.entity.TContent"/>
         <variable
             name="coverUrl"
             type="String"/>

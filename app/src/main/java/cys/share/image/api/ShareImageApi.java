@@ -74,7 +74,7 @@ public class ShareImageApi {
                 .subscribe(subscriber);
     }
 
-    public static void getTagList(String token,String tag,int page,Subscriber<List<TagContent>> subscriber) {
+    public static void getTagList(String token,String tag,int page,Subscriber<TagContent> subscriber) {
         TagListServer server = createServer(TagListServer.class);
         server.getTagList(token,tag,page)
                 .subscribeOn(Schedulers.io())
@@ -159,6 +159,18 @@ public class ShareImageApi {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
+    }
+
+    public static void modifyUserNick(String token,String nickName,Subscriber<User> subscriber){
+        UserRelevantServer relevantServer = createServer(UserRelevantServer.class);
+        relevantServer.modifyUserNick(token,nickName)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
+    public static void modifyUserPassword(String token,String password,Subscriber<ResponseMessage> subscriber){
+
     }
 
 
