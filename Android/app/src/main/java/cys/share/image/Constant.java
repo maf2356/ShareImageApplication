@@ -19,6 +19,7 @@ public class Constant {
     public static final String MODIFY = "modify";
     public static final int MODIFY_NICKNAME = 7;
     public static final int MODIFY_AVATAR = 8;
+    public static final int MODIFY_PASSWORD = 9;
 
     public static final String REFRESH_ACTION = "refresh_action";
 
