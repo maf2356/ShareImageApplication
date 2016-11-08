@@ -75,4 +75,10 @@ public class ShareImageEventListener {
         intent.putExtra(Constant.MODIFY,Constant.MODIFY_NICKNAME);
         activity.startActivityForResult(intent,Constant.MODIFYCODE);
     }
+
+    public void modifyUserPassword(final View view,FragmentActivity activity){
+        Intent intent = new Intent(activity, ShareImageUserModifyActivity.class);
+        intent.putExtra(Constant.MODIFY,Constant.MODIFY_PASSWORD);
+        activity.startActivityForResult(intent,Constant.MODIFYCODE);
+    }
 }

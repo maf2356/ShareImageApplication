@@ -6,6 +6,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
+import com.github.florent37.materialviewpager.MaterialViewPagerHelper;
+import com.github.florent37.materialviewpager.MaterialViewPagerSettings;
+import com.github.florent37.materialviewpager.adapter.RecyclerViewMaterialAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 

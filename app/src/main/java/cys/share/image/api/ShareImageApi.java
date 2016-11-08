@@ -170,7 +170,11 @@ public class ShareImageApi {
     }
 
     public static void modifyUserPassword(String token,String password,Subscriber<ResponseMessage> subscriber){
-
+        UserRelevantServer relevantServer = createServer(UserRelevantServer.class);
+        relevantServer.modifyUserPassword(token,password)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
     }
 
 
