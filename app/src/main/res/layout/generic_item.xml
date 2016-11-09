@@ -82,11 +82,11 @@
             />
 
         <ImageView
+            android:id="@+id/coverImg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
             app:imageUrl="@{coverUrl}"
-            android:scaleType="fitXY"
+            android:scaleType="fitCenter"
             android:src="@mipmap/img_default"
             android:onClick="@{(view)->listener.showLargeView(view,activity,item)}"
             app:width="@{item.cover.width}"
