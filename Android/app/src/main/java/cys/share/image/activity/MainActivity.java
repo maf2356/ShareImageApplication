@@ -121,7 +121,6 @@ public class MainActivity extends BaseActivity {
         mMaterialViewPager.getViewPager().setAdapter(mFragmentStatePagerAdapter);
         mMaterialViewPager.getViewPager().setOffscreenPageLimit(mMaterialViewPager.getViewPager().getAdapter().getCount());
         mMaterialViewPager.getPagerTitleStrip().setViewPager(mMaterialViewPager.getViewPager());
-
         mMaterialViewPager.setMaterialViewPagerListener(new MaterialViewPager.Listener() {
             @Override
             public HeaderDesign getHeaderDesign(int page) {

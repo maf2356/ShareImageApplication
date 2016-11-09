@@ -14,6 +14,7 @@ import java.util.List;
 
 import cys.share.image.BR;
 import cys.share.image.R;
+import cys.share.image.auxiliary.ShareImageAuxiliaryTool;
 import cys.share.image.databinding.GenericItemBinding;
 import cys.share.image.entity.Cover;
 import cys.share.image.entity.TContent;
@@ -40,6 +41,9 @@ public class GenericAdapter extends RecyclerView.Adapter<GenericAdapter.BindingH
         GenericItemBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
                 R.layout.generic_item, parent, false);
         BindingHolder holder = new BindingHolder(binding.getRoot());
+
+
+        //set imageview size before load
         holder.setBinding(binding);
         return holder;
     }
@@ -49,6 +53,15 @@ public class GenericAdapter extends RecyclerView.Adapter<GenericAdapter.BindingH
         holder.getBinding().setVariable(BR.item,mData.get(position));
         Cover cover = mData.get(position).getCover();
         if(cover!=null&& !TextUtils.isEmpty(cover.getMiddleUrl())){
+            float dimension = mActivity.getResources().getDimension(R.dimen.activity_horizontal_margin);
+            int width  = cover.getWidth();
+            int height  = cover.getHeight();
+            int widthImg = (int) ((ShareImageAuxiliaryTool.getWindowsWidth(mActivity)) - dimension);
+            int heightImg = (int) (widthImg / (((float) width / height)));
+            ViewGroup.LayoutParams para = holder.getBinding().coverImg.getLayoutParams();
+            para.height = heightImg;
+            para.width = widthImg;
+            holder.getBinding().coverImg.setLayoutParams(para);
             holder.getBinding().setCoverUrl(cover.getMiddleUrl());
         }
         String userAvatar = mData.get(position).getUser().getAvatar();
