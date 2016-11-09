@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import com.github.florent37.materialviewpager.MaterialViewPagerHelper;
+import com.github.florent37.materialviewpager.adapter.RecyclerViewMaterialAdapter;
 
 import com.github.florent37.materialviewpager.MaterialViewPagerHelper;
 import com.github.florent37.materialviewpager.MaterialViewPagerSettings;
 import com.github.florent37.materialviewpager.adapter.RecyclerViewMaterialAdapter;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +60,13 @@ public class GenericFragment extends BaseFragment<TContent> {
 //                ScaleInAnimationAdapter scaleAdapter = new ScaleInAnimationAdapter(alphaAdapter);
 //        scaleAdapter.setFirstOnly(false);
 //        scaleAdapter.setInterpolator(new OvershootInterpolator());
+                MaterialViewPagerHelper.registerRecyclerView(getActivity(), mDataBinding.recyclerView, new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                        ShareImageAuxiliaryTool.log(newState+"");
+                        super.onScrollStateChanged(recyclerView, newState);
+                    }
+                });
                 mDataBinding.recyclerView.setAdapter(adapter);
                 doneRefresh();
             }
