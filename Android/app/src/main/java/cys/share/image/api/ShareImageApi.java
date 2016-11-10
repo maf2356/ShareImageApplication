@@ -18,6 +18,7 @@ import cys.share.image.api.server.UserRelevantServer;
 import cys.share.image.entity.MyUploadImage;
 import cys.share.image.entity.NavTag;
 import cys.share.image.entity.ResponseMessage;
+import cys.share.image.entity.TContent;
 import cys.share.image.entity.TagContent;
 import cys.share.image.entity.User;
 import cys.share.image.entity.realm.MyUploadImageRealm;
@@ -77,6 +78,14 @@ public class ShareImageApi {
     public static void getTagList(String token,String tag,int page,Subscriber<TagContent> subscriber) {
         TagListServer server = createServer(TagListServer.class);
         server.getTagList(token,tag,page)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
+    public static void getTContent(String token, String timelineId, Subscriber<TContent> subscriber){
+        TagListServer server = createServer(TagListServer.class);
+        server.getTContent(token,timelineId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);

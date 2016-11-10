@@ -48,12 +48,12 @@ public class ShareImageEventListener {
                 Intent intent = LargeViewActivity.newIntent(activity, item);
                 ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(
                         activity, view, LargeViewActivity.TRANSIT_PIC);
-                try {
-                    ActivityCompat.startActivity(activity, intent, optionsCompat.toBundle());
-                } catch (IllegalArgumentException e) {
-                    e.printStackTrace();
+//                try {
+//                    ActivityCompat.startActivity(activity, intent, optionsCompat.toBundle());
+//                } catch (IllegalArgumentException e) {
+//                    e.printStackTrace();
                     activity.startActivity(intent);
-                }
+//                }
             }
 
 
