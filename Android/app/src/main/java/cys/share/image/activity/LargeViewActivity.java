@@ -17,17 +17,24 @@ import android.widget.ImageView;
 import com.kogitune.activity_transition.ActivityTransition;
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
 import cys.share.image.R;
+import cys.share.image.api.ShareImageApi;
+import cys.share.image.auxiliary.ShareImageAuxiliaryTool;
 import cys.share.image.databinding.ActivityLargeviewingBinding;
+import cys.share.image.databinding.ItemLargeviewBinding;
+import cys.share.image.entity.Cover;
 import cys.share.image.entity.TContent;
 import cys.share.image.entity.TagContent;
 import cys.share.image.imagepicker.Image;
+import rx.Subscriber;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
  * Created by Administrator on 2016/10/31.
  */
-public class LargeViewActivity extends AppCompatActivity{
+public class LargeViewActivity extends BaseActivity{
 
     ActivityLargeviewingBinding mBingding;
     public static final String EXTRA_TAGCONTENT = TagContent.class.getName();
@@ -35,6 +42,7 @@ public class LargeViewActivity extends AppCompatActivity{
     private PhotoViewAttacher mPhotoViewAttacher;
     private ViewPager mViewPager;
     TContent item;
+    LargeViewAdapter mAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,8 +51,7 @@ public class LargeViewActivity extends AppCompatActivity{
         mViewPager = mBingding.viewpager;
         item = (TContent) getIntent().getSerializableExtra(EXTRA_TAGCONTENT);
         mBingding.setItem(item);
-        Adapter a = new Adapter();
-        mViewPager.setAdapter(a);
+        getImagesDetail();
 //        ViewCompat.setTransitionName(a.getImg(), TRANSIT_PIC);
 
 //        mPhotoViewAttacher = new PhotoViewAttacher(mBingding.img);
@@ -55,6 +62,31 @@ public class LargeViewActivity extends AppCompatActivity{
         intent.putExtra(LargeViewActivity.EXTRA_TAGCONTENT, item);
         return intent;
     }
+
+
+
+    private void getImagesDetail(){
+        ShareImageApi.getTContent(getUser().getToken(), item.getId()+"", new Subscriber<TContent>() {
+            @Override
+            public void onCompleted() {
+                mAdapter = new LargeViewAdapter(item);
+                mViewPager.setAdapter(mAdapter);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                ShareImageAuxiliaryTool.log(e.getMessage());
+            }
+
+            @Override
+            public void onNext(TContent tContent) {
+                item.setImages(tContent.getImages());
+                ShareImageAuxiliaryTool.log(tContent.toString());
+            }
+        });
+    }
+
+
 
     @Override
     public void onBackPressed() {
@@ -68,13 +100,19 @@ public class LargeViewActivity extends AppCompatActivity{
         mPhotoViewAttacher.cleanup();
     }
 
-    private class Adapter extends PagerAdapter{
+    private class LargeViewAdapter extends PagerAdapter{
 
-        ImageView img;
+        TContent mItem;
+
+        public LargeViewAdapter(TContent item){
+            mItem = item;
+        }
+
         @Override
         public int getCount() {
-            return item.getImageCount();
+            return mItem.getImages().size();
         }
+
 
         @Override
         public boolean isViewFromObject(View view, Object object) {
@@ -83,16 +121,17 @@ public class LargeViewActivity extends AppCompatActivity{
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            View view = LayoutInflater.from(LargeViewActivity.this).inflate(R.layout.item_largeview, container, false);
-            ImageView img = (ImageView) view.findViewById(R.id.img);
-            if(position==0){
-                Adapter.this.img = img;
+
+            ItemLargeviewBinding itemLargeviewBinding = DataBindingUtil.inflate(getLayoutInflater(),R.layout.item_largeview,container,false);
+            List<Cover> mItemImages = mItem.getImages();
+            if(getCount()>0){
+                itemLargeviewBinding.setImgUrl(mItemImages.get(position).getLargeUrl());
+            }else{
+                itemLargeviewBinding.setImgUrl(mItem.getCover().getLargeUrl());
             }
-            mPhotoViewAttacher = new PhotoViewAttacher(img);
-            Picasso.with(container.getContext()).load(item.getCover().getMiddleUrl()).into(img);
-//            ViewCompat.setTransitionName(img, TRANSIT_PIC);
-            container.addView(view);
-            return view;
+            mPhotoViewAttacher = new PhotoViewAttacher(itemLargeviewBinding.img);
+            container.addView(itemLargeviewBinding.getRoot());
+            return itemLargeviewBinding.getRoot();
         }
 
         @Override
@@ -100,8 +139,5 @@ public class LargeViewActivity extends AppCompatActivity{
             container.removeView((View) object);
         }
 
-        public ImageView getImg(){
-            return img;
-        }
     }
 }

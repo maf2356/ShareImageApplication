@@ -85,7 +85,7 @@ public class ShareImageApi {
 
     public static void getTContent(String token, String timelineId, Subscriber<TContent> subscriber){
         TagListServer server = createServer(TagListServer.class);
-        server.getTContent(token,timelineId)
+        server.getTContent(timelineId,token)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);

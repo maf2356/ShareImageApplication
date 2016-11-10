@@ -17,7 +17,7 @@ public interface TagListServer {
     @GET("api/timeline/list")
     Observable<TagContent> getTagList(@Query("token") String token, @Query("tag")String tag, @Query("page") int page);
 
-    @GET("api/timeline/detail")
-    Observable<TContent> getTContent(@Query("token")String token,@Path("timelineId") String timelineId);
+    @GET("api/timeline/detail/{timelineId}")
+    Observable<TContent> getTContent(@Path("timelineId") String timelineId,@Query("token")String token);
 
 }
