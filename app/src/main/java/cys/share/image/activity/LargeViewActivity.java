@@ -90,7 +90,7 @@ public class LargeViewActivity extends AppCompatActivity{
             }
             mPhotoViewAttacher = new PhotoViewAttacher(img);
             Picasso.with(container.getContext()).load(item.getCover().getMiddleUrl()).into(img);
-            ViewCompat.setTransitionName(img, TRANSIT_PIC);
+//            ViewCompat.setTransitionName(img, TRANSIT_PIC);
             container.addView(view);
             return view;
         }

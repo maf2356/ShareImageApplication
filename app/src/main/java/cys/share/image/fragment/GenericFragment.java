@@ -60,13 +60,13 @@ public class GenericFragment extends BaseFragment<TContent> {
 //                ScaleInAnimationAdapter scaleAdapter = new ScaleInAnimationAdapter(alphaAdapter);
 //        scaleAdapter.setFirstOnly(false);
 //        scaleAdapter.setInterpolator(new OvershootInterpolator());
-                MaterialViewPagerHelper.registerRecyclerView(getActivity(), mDataBinding.recyclerView, new RecyclerView.OnScrollListener() {
-                    @Override
-                    public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                        ShareImageAuxiliaryTool.log(newState+"");
-                        super.onScrollStateChanged(recyclerView, newState);
-                    }
-                });
+//                MaterialViewPagerHelper.registerRecyclerView(getActivity(), mDataBinding.recyclerView, new RecyclerView.OnScrollListener() {
+//                    @Override
+//                    public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+//                        ShareImageAuxiliaryTool.log(newState+"");
+//                        super.onScrollStateChanged(recyclerView, newState);
+//                    }
+//                });
                 mDataBinding.recyclerView.setAdapter(adapter);
                 doneRefresh();
             }

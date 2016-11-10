@@ -3,6 +3,7 @@ package cys.share.image.entity;
 import com.google.gson.Gson;
 
 import java.io.Serializable;
+import java.util.List;
 
 import cys.share.image.entity.realm.BaseBean;
 import cys.share.image.entity.realm.TagContentRealm;
@@ -34,6 +35,8 @@ public class TContent extends BaseBean implements RealmTransaction<TagContentRea
     private long createTime;
 
     private boolean liked;
+
+    private List<Cover> images;
 
     public int getId() {
         return id;
