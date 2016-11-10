@@ -19,6 +19,7 @@ import cys.share.image.databinding.GenericItemBinding;
 import cys.share.image.entity.Cover;
 import cys.share.image.entity.TContent;
 import cys.share.image.entity.TagContent;
+import cys.share.image.entity.User;
 import cys.share.image.listener.ShareImageEventListener;
 
 /**
@@ -64,9 +65,9 @@ public class GenericAdapter extends RecyclerView.Adapter<GenericAdapter.BindingH
             holder.getBinding().coverImg.setLayoutParams(para);
             holder.getBinding().setCoverUrl(cover.getMiddleUrl());
         }
-        String userAvatar = mData.get(position).getUser().getAvatar();
-        if(!TextUtils.isEmpty(userAvatar)){
-            holder.getBinding().setAvatarUrl(userAvatar);
+        User user = mData.get(position).getUser();
+        if(user!=null&&!TextUtils.isEmpty(user.getAvatar())){
+            holder.getBinding().setAvatarUrl(user.getAvatar());
         }
         holder.getBinding().setActivity(mActivity);
         holder.getBinding().setListener(mListener);
