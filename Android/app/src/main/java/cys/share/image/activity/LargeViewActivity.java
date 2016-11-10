@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
@@ -14,7 +17,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.kogitune.activity_transition.ActivityTransition;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -27,6 +35,7 @@ import cys.share.image.databinding.ItemLargeviewBinding;
 import cys.share.image.entity.Cover;
 import cys.share.image.entity.TContent;
 import cys.share.image.entity.TagContent;
+import cys.share.image.fragment.LargeViewFragment;
 import cys.share.image.imagepicker.Image;
 import rx.Subscriber;
 import uk.co.senab.photoview.PhotoViewAttacher;
@@ -69,8 +78,9 @@ public class LargeViewActivity extends BaseActivity{
         ShareImageApi.getTContent(getUser().getToken(), item.getId()+"", new Subscriber<TContent>() {
             @Override
             public void onCompleted() {
-                mAdapter = new LargeViewAdapter(item);
-                mViewPager.setAdapter(mAdapter);
+//                Picasso.with(LargeViewActivity.this).load(item.getCover().getLargeUrl()).into(mBingding.img);
+//                mAdapter = new LargeViewAdapter(item);
+                mViewPager.setAdapter(new LargeViewAdapter(getSupportFragmentManager()));
             }
 
             @Override
@@ -90,54 +100,32 @@ public class LargeViewActivity extends BaseActivity{
 
     @Override
     public void onBackPressed() {
-        mPhotoViewAttacher.cleanup();
         super.onBackPressed();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mPhotoViewAttacher.cleanup();
     }
 
-    private class LargeViewAdapter extends PagerAdapter{
 
-        TContent mItem;
 
-        public LargeViewAdapter(TContent item){
-            mItem = item;
+    private  class LargeViewAdapter extends FragmentStatePagerAdapter {
+
+        public LargeViewAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return LargeViewFragment.newInstance(item.getImages().get(position).getLargeUrl());
         }
 
         @Override
         public int getCount() {
-            return mItem.getImages().size();
+            int i = 0;
+            for (;(item.getImages().size()>i&&item.getImages().get(i)!=null);i++);
+            return i;
         }
-
-
-        @Override
-        public boolean isViewFromObject(View view, Object object) {
-            return view == object;
-        }
-
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-
-            ItemLargeviewBinding itemLargeviewBinding = DataBindingUtil.inflate(getLayoutInflater(),R.layout.item_largeview,container,false);
-            List<Cover> mItemImages = mItem.getImages();
-            if(getCount()>0){
-                itemLargeviewBinding.setImgUrl(mItemImages.get(position).getLargeUrl());
-            }else{
-                itemLargeviewBinding.setImgUrl(mItem.getCover().getLargeUrl());
-            }
-            mPhotoViewAttacher = new PhotoViewAttacher(itemLargeviewBinding.img);
-            container.addView(itemLargeviewBinding.getRoot());
-            return itemLargeviewBinding.getRoot();
-        }
-
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView((View) object);
-        }
-
     }
 }
