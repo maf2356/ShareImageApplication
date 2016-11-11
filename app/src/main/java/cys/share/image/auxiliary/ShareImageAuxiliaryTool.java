@@ -29,6 +29,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.function.Predicate;
 
 import cys.share.image.Constant;
 import cys.share.image.activity.LoginActivity;
@@ -179,6 +181,7 @@ public class ShareImageAuxiliaryTool {
 
 
     public static String getTags(String sTags){
+
         String _publicTags = "";
         String [] separatorTags = sTags.split(TagsEditText.SEPARATOR);
         for (String tag:
@@ -193,6 +196,7 @@ public class ShareImageAuxiliaryTool {
     }
 
     public static Transformation getTransformation(){
+
         Transformation transformation = new Transformation() {
 
             @Override

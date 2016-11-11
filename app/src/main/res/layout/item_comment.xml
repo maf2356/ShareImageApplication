@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="item"
+            type="cys.share.image.entity.Comment"></variable>
+    </data>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:padding="@dimen/app_margin_small"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/user_info_title_height">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:civ_border_width="1dp"
+            android:src="@mipmap/ic_launcher"
+            android:layout_alignParentLeft="true"
+            app:loadAvatar="@{avatarUrl}"
+            android:id="@+id/avatar"
+            app:civ_border_color="#c2636161"/>
+
+        <TextView
+            android:text="@{item.user.nickName}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/app_margin"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/avatar" />
+    </RelativeLayout>
+</LinearLayout>
+</layout>

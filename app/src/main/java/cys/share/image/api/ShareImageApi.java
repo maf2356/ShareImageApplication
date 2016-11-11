@@ -34,6 +34,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -75,12 +76,12 @@ public class ShareImageApi {
                 .subscribe(subscriber);
     }
 
-    public static void getTagList(String token,String tag,int page,Subscriber<TagContent> subscriber) {
+    public static void getTagList(String token,String tag,int page,Action1<TagContent> onNextAction) {
         TagListServer server = createServer(TagListServer.class);
         server.getTagList(token,tag,page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(subscriber);
+                .subscribe(onNextAction);
     }
 
     public static void getTContent(String token, String timelineId, Subscriber<TContent> subscriber){

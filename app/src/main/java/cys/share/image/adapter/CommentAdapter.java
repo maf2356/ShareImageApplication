@@ -1,6 +1,5 @@
 package cys.share.image.adapter;
 
-import android.app.Activity;
 import android.databinding.DataBindingUtil;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
@@ -16,22 +15,22 @@ import cys.share.image.BR;
 import cys.share.image.R;
 import cys.share.image.auxiliary.ShareImageAuxiliaryTool;
 import cys.share.image.databinding.GenericItemBinding;
+import cys.share.image.entity.Comment;
 import cys.share.image.entity.Cover;
 import cys.share.image.entity.TContent;
-import cys.share.image.entity.TagContent;
 import cys.share.image.entity.User;
 import cys.share.image.listener.ShareImageEventListener;
 
 /**
  * Created by Administrator on 2016/10/27.
  */
-public class GenericAdapter extends RecyclerView.Adapter<GenericAdapter.BindingHolder>{
+public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.BindingHolder>{
 
 
-    private List<TContent> mData = new ArrayList<>();
+    private List<Comment> mData = new ArrayList<>();
     private ShareImageEventListener mListener;
     private FragmentActivity mActivity;
-    public GenericAdapter(FragmentActivity activity,List<TContent> data){
+    public CommentAdapter(FragmentActivity activity, List<Comment> data){
         this.mActivity = activity;
         this.mData = data;
         mListener = new ShareImageEventListener();
@@ -51,7 +50,7 @@ public class GenericAdapter extends RecyclerView.Adapter<GenericAdapter.BindingH
 
     @Override
     public void onBindViewHolder(BindingHolder holder, int position) {
-        TContent tContent = mData.get(position);
+        Comment tContent = mData.get(position);
         holder.getBinding().setVariable(BR.item,tContent);
         Cover cover = tContent.getCover();
         if(cover!=null&& !TextUtils.isEmpty(cover.getMiddleUrl())){

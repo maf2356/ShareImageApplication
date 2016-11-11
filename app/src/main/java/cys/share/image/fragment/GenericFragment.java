@@ -2,6 +2,7 @@ package cys.share.image.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -30,9 +31,10 @@ import cys.share.image.fragment.base.BaseFragment;
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
 import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
 import rx.Subscriber;
+import rx.functions.Action1;
 
 /**
- * Created by Administrator on 2016/10/27.
+ * Created by 陈尤帅 on 2016/10/27.
  */
 public class GenericFragment extends BaseFragment<TContent> {
 
@@ -52,35 +54,14 @@ public class GenericFragment extends BaseFragment<TContent> {
     @Override
     public void requestData() {
         String tag = getArguments().getString("tag");
-        ShareImageApi.getTagList(getToken(), tag, 1, new Subscriber<TagContent>() {
-            @Override
-            public void onCompleted() {
+        ShareImageApi.getTagList(getToken(),tag,1,(t)->{
+            mData = t.getDatas();
+            if(mData!=null&&mData.size()>0){
                 GenericAdapter adapter = new GenericAdapter(getActivity(),mData);
-//                AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(adapter);
-//                ScaleInAnimationAdapter scaleAdapter = new ScaleInAnimationAdapter(alphaAdapter);
-//        scaleAdapter.setFirstOnly(false);
-//        scaleAdapter.setInterpolator(new OvershootInterpolator());
-//                MaterialViewPagerHelper.registerRecyclerView(getActivity(), mDataBinding.recyclerView, new RecyclerView.OnScrollListener() {
-//                    @Override
-//                    public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-//                        ShareImageAuxiliaryTool.log(newState+"");
-//                        super.onScrollStateChanged(recyclerView, newState);
-//                    }
-//                });
                 mDataBinding.recyclerView.setAdapter(adapter);
                 doneRefresh();
             }
-
-            @Override
-            public void onError(Throwable e) {
-            }
-
-            @Override
-            public void onNext(TagContent tagContents) {
-                mData = tagContents.getDatas();
-            }
         });
-
     }
 
     @Override
@@ -90,6 +71,5 @@ public class GenericFragment extends BaseFragment<TContent> {
 
     @Override
     public void onViewCreated(@Nullable Bundle savedInstanceState) {
-
     }
 }
