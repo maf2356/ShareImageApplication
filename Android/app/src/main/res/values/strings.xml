@@ -37,4 +37,9 @@
     <string name="login_account_text">UserName</string>
     <string name="login_password_text">Password</string>
 
+    <string name="default_comment">评论（0）</string>
+    <string name="default_like">喜欢（0）</string>
+
+    <string name="comment_count">评论（%1$d）</string>
+    <string name="like_count">喜欢（%1$d）</string>
 </resources>

@@ -41,7 +41,7 @@ import rx.Subscriber;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
- * Created by Administrator on 2016/10/31.
+ * Created by 陈尤帅 on 2016/10/31.
  */
 public class LargeViewActivity extends BaseActivity{
 
@@ -112,7 +112,7 @@ public class LargeViewActivity extends BaseActivity{
 
     private  class LargeViewAdapter extends FragmentStatePagerAdapter {
 
-        public LargeViewAdapter(FragmentManager fm) {
+        LargeViewAdapter(FragmentManager fm) {
             super(fm);
         }
 

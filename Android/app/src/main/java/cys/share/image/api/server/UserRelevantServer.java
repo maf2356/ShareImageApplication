@@ -49,4 +49,7 @@ public interface UserRelevantServer {
 
     @POST("api/user/changePassword")
     Observable<ResponseMessage> modifyUserPassword(@Query("token")String token,@Query("password")String password);
+
+    @GET("api/timeline/comment/list")
+    Observable
 }

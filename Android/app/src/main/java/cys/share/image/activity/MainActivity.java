@@ -80,23 +80,20 @@ public class MainActivity extends BaseActivity {
 //            actionBar.setHomeButtonEnabled(true);
 //        }
         mMaterialViewPager.getToolbar().inflateMenu(R.menu.menu_main);
-        mMaterialViewPager.getToolbar().setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.action_settings:
-                        PhotoPickerIntent intent = new PhotoPickerIntent(MainActivity.this);
-                        intent.setSelectModel(SelectModel.MULTI);
-                        intent.setShowCarema(true); // 是否显示拍照
-                        intent.setMaxTotal(6); // 最多选择照片数量，默认为6
+        mMaterialViewPager.getToolbar().setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()){
+                case R.id.action_settings:
+                    PhotoPickerIntent intent = new PhotoPickerIntent(MainActivity.this);
+                    intent.setSelectModel(SelectModel.MULTI);
+                    intent.setShowCarema(true); // 是否显示拍照
+                    intent.setMaxTotal(6); // 最多选择照片数量，默认为6
 //                        intent.setSelectedPaths(imagePaths); // 已选中的照片地址， 用于回显选中状态
-                        startActivity(intent);
+                    startActivity(intent);
 
 //                        startActivity(new Intent(MainActivity.this,ReleaseActivity.class));
-                        break;
-                }
-                return true;
+                    break;
             }
+            return true;
         });
 //        mMaterialViewPager.getPagerTitleStrip().setVisibility(View.INVISIBLE);
 //        toolbar = mMaterialViewPager.getToolbar();
@@ -121,14 +118,9 @@ public class MainActivity extends BaseActivity {
         mMaterialViewPager.getViewPager().setAdapter(mFragmentStatePagerAdapter);
         mMaterialViewPager.getViewPager().setOffscreenPageLimit(mMaterialViewPager.getViewPager().getAdapter().getCount());
         mMaterialViewPager.getPagerTitleStrip().setViewPager(mMaterialViewPager.getViewPager());
-        mMaterialViewPager.setMaterialViewPagerListener(new MaterialViewPager.Listener() {
-            @Override
-            public HeaderDesign getHeaderDesign(int page) {
-                return HeaderDesign.fromColorResAndUrl(
-                        R.color.colorPrimaryDark,
-                        "http://www.tothemobile.com/wp-content/uploads/2014/07/original.jpg");
-            }
-        });
+        mMaterialViewPager.setMaterialViewPagerListener(page -> HeaderDesign.fromColorResAndUrl(
+                R.color.colorPrimaryDark,
+                "http://www.tothemobile.com/wp-content/uploads/2014/07/original.jpg"));
 
         User user = getUser();
         if(user!=null){
