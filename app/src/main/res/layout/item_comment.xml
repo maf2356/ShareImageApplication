@@ -3,24 +3,38 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
+            name="avatarUrl"
+            type="String"></variable>
+        <variable
+            name="listener"
+            type="cys.share.image.listener.ShareImageEventListener"></variable>
+        <import type="cys.share.image.auxiliary.ShareImageAuxiliaryTool"/>
+        <variable
             name="item"
             type="cys.share.image.entity.Comment"></variable>
+        <import type="android.view.View"></import>
+        <import type="java.util.List"></import>
+        <import type="cys.share.image.Constant"></import>
     </data>
 <LinearLayout
     android:layout_width="match_parent"
-    android:padding="@dimen/app_margin_small"
-    android:layout_height="match_parent">
+    android:paddingLeft="@dimen/app_margin"
+    android:paddingRight="@dimen/app_margin"
+    android:paddingTop="@dimen/app_margin_small"
+    android:paddingBottom="@dimen/app_margin_small"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/user_info_title_height">
+        android:layout_height="wrap_content">
         <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/user_info_avatar_height"
+            android:layout_height="@dimen/user_info_avatar_height"
             app:civ_border_width="1dp"
             android:src="@mipmap/ic_launcher"
             android:layout_alignParentLeft="true"
-            app:loadAvatar="@{avatarUrl}"
+            app:loadAvatar="@{item.user.avatar}"
             android:id="@+id/avatar"
             app:civ_border_color="#c2636161"/>
 
@@ -28,9 +42,86 @@
             android:text="@{item.user.nickName}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:textSize="@dimen/app_text_size"
             android:layout_marginStart="@dimen/app_margin"
-            android:layout_centerVertical="true"
-            android:layout_toEndOf="@+id/avatar" />
+            android:layout_toEndOf="@+id/avatar"
+            android:id="@+id/textView3" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{item.content}"
+            android:textSize="@dimen/app_text_size_x"
+            android:textStyle="bold"
+            android:layout_below="@+id/avatar"
+            android:layout_alignStart="@+id/textView3"
+            android:id="@+id/textView5" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@{ShareImageAuxiliaryTool.transformationTime(item.createTime)}"
+            android:id="@+id/textView4"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="@dimen/app_text_size_s"
+            android:layout_marginTop="@dimen/app_margin"
+            android:layout_below="@+id/textView5"
+            android:layout_marginBottom="@dimen/app_margin_small"
+            android:layout_alignStart="@+id/textView5" />
+
+        <include
+            android:id="@+id/line1"
+            layout="@layout/layout_line"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_below="@+id/textView4"
+            android:layout_alignStart="@+id/textView4"></include>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/line1"
+            android:orientation="vertical"
+            android:visibility="@{item.getChildComments()!=null?View.VISIBLE:View.GONE}"
+            android:layout_alignStart="@+id/line1"
+            android:layout_marginTop="@dimen/app_margin_small"
+            android:layout_marginBottom="@dimen/app_margin_small">
+            <LinearLayout
+                android:id="@+id/childCommentLayout"
+
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:clickable="true"
+                android:onClick="@{(view)->listener.go2MoreComment(view,item.getChildComments())}"
+                android:visibility="@{item.getChildComments().getCount()>Constant.MAX_SHOW_COMMENT?View.VISIBLE:View.GONE}"
+                android:text="@{ShareImageAuxiliaryTool.showMoreComment(item.getChildComments().getCount)}"
+                android:textColor="#FF1C81E6"
+                android:layout_marginTop="@dimen/app_margin"
+                android:layout_height="wrap_content" />
+            <include
+                android:layout_marginTop="@dimen/app_margin_x"
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                layout="@layout/layout_line"
+                ></include>
+        </LinearLayout>
+
+
     </RelativeLayout>
+
+
+
+
+
+
 </LinearLayout>
 </layout>

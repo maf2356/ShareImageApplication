@@ -15,6 +15,8 @@ import cys.share.image.api.custom.UploadFileRequestBody;
 import cys.share.image.api.server.NaVTagsServer;
 import cys.share.image.api.server.TagListServer;
 import cys.share.image.api.server.UserRelevantServer;
+import cys.share.image.entity.Comment;
+import cys.share.image.entity.CommentDatas;
 import cys.share.image.entity.MyUploadImage;
 import cys.share.image.entity.NavTag;
 import cys.share.image.entity.ResponseMessage;
@@ -90,6 +92,14 @@ public class ShareImageApi {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
+    }
+
+    public static void getComment(String token, long dataTime, int timelineId, int page, Action1<CommentDatas> onNextAction, Action1<Throwable> onError){
+        UserRelevantServer userRelevantServer = createServer(UserRelevantServer.class);
+        userRelevantServer.getComment(token,dataTime,timelineId,page)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(onNextAction,onError);
     }
 
     public static void register(String account, String nickName, String password, Subscriber<User> subscriber){

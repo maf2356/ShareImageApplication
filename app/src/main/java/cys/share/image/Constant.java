@@ -21,6 +21,7 @@ public class Constant {
     public static final int MODIFY_AVATAR = 8;
     public static final int MODIFY_PASSWORD = 9;
 
+    public static final int MAX_SHOW_COMMENT = 5;
     public static final String REFRESH_ACTION = "refresh_action";
 
 }

@@ -68,6 +68,7 @@ public class ShareImageUserModifyActivity extends BaseActivity {
 
     }
 
+
     private void submitUserInfo(){
         if(flag == Constant.MODIFY_NICKNAME){
             modifyUserNick();

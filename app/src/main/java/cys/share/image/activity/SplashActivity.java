@@ -49,6 +49,13 @@ public class SplashActivity extends AppCompatActivity{
             public void onError(Throwable e) {
                 e.printStackTrace();
                 ShareImageAuxiliaryTool.log(e.getMessage());
+                User user = ShareImageRealm.getInstance(SplashActivity.this).queryUserInfo();
+                if(user!=null){
+                    ((ShareImageApplication)getApplication()).setToken(user.getToken());
+                }
+
+                startActivity(new Intent(SplashActivity.this,MainActivity.class));
+                SplashActivity.this.finish();
             }
 
             @Override

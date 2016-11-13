@@ -1,6 +1,7 @@
 package cys.share.image.listener;
 
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.FragmentActivity;
@@ -14,11 +15,13 @@ import com.squareup.picasso.Picasso;
 
 import cys.share.image.Constant;
 import cys.share.image.R;
+import cys.share.image.activity.CommentActivity;
 import cys.share.image.activity.LargeViewActivity;
 import cys.share.image.activity.MainActivity;
 import cys.share.image.activity.ShareImageUserModifyActivity;
 import cys.share.image.api.ShareImageApi;
 import cys.share.image.auxiliary.ShareImageAuxiliaryTool;
+import cys.share.image.entity.CommentDatas;
 import cys.share.image.entity.TContent;
 import cys.share.image.entity.TagContent;
 import cys.share.image.fragment.LargeViewFragment;
@@ -80,5 +83,15 @@ public class ShareImageEventListener {
         Intent intent = new Intent(activity, ShareImageUserModifyActivity.class);
         intent.putExtra(Constant.MODIFY,Constant.MODIFY_PASSWORD);
         activity.startActivityForResult(intent,Constant.MODIFYCODE);
+    }
+
+    public void go2Comment(View view,TContent item){
+        Intent intent = new Intent(view.getContext(), CommentActivity.class);
+        intent.putExtra("item",item);
+        view.getContext().startActivity(intent);
+    }
+
+    public void go2MoreComment(View view , CommentDatas commentDatas){
+        ShareImageAuxiliaryTool.showSnackBar(view,"1123321", Snackbar.LENGTH_LONG);
     }
 }

@@ -25,7 +25,7 @@ public class Comment extends BaseBean implements Serializable{
 
     private long createTime;
 
-    private List<Comment> childComments;
+    private CommentDatas childComments;
 
     public int getId() {
         return id;
@@ -83,11 +83,19 @@ public class Comment extends BaseBean implements Serializable{
         this.createTime = createTime;
     }
 
-    public List<Comment> getChildComments() {
+    public CommentDatas getChildComments() {
         return childComments;
     }
 
-    public void setChildComments(List<Comment> childComments) {
+    public void setChildComments(CommentDatas childComments) {
         this.childComments = childComments;
     }
+
+    //    public List<CommentDatas> getChildComments() {
+//        return childComments;
+//    }
+//
+//    public void setChildComments(List<CommentDatas> childComments) {
+//        this.childComments = childComments;
+//    }
 }

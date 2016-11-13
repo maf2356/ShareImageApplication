@@ -66,6 +66,7 @@ public class LargeViewActivity extends BaseActivity{
 //        mPhotoViewAttacher = new PhotoViewAttacher(mBingding.img);
     }
 
+
     public static Intent newIntent(Context context, TContent item) {
         Intent intent = new Intent(context, LargeViewActivity.class);
         intent.putExtra(LargeViewActivity.EXTRA_TAGCONTENT, item);

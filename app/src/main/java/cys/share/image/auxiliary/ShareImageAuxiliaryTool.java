@@ -64,6 +64,10 @@ public class ShareImageAuxiliaryTool {
         return "总共有"+likeCount+"个人喜欢这张图片，一共有"+commentCount+"条评论";
     }
 
+    public static String showMoreComment(int commentCount){
+        return "更多"+commentCount+"回复";
+    }
+
     /**
      *
      * @param rootView
