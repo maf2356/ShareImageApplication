@@ -2,6 +2,8 @@ package cys.share.image.api.server;
 
 import java.util.List;
 
+import cys.share.image.entity.Comment;
+import cys.share.image.entity.CommentDatas;
 import cys.share.image.entity.MyUploadImage;
 import cys.share.image.entity.ResponseMessage;
 import cys.share.image.entity.TagContent;
@@ -51,5 +53,5 @@ public interface UserRelevantServer {
     Observable<ResponseMessage> modifyUserPassword(@Query("token")String token,@Query("password")String password);
 
     @GET("api/timeline/comment/list")
-    Observable
+    Observable<CommentDatas> getComment(@Query("token")String token, @Query("dataTime")long dataTime, @Query("timelineId")int timelineId, @Query("page")int page);
 }

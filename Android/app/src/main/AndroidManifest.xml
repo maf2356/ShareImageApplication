@@ -47,6 +47,10 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
+        <activity android:name=".activity.CommentActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
         <activity
             android:name=".imagepicker.PhotoPickerActivity"
             android:theme="@style/PhotoPickerTheme"

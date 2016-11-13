@@ -132,6 +132,7 @@ public class MainActivity extends BaseActivity {
         registerRefreshReceiver();
     }
 
+
     public void registerRefreshReceiver() {
         IntentFilter filter = new IntentFilter(Constant.REFRESH_ACTION);
         registerReceiver(onRefreshReceiver, filter);

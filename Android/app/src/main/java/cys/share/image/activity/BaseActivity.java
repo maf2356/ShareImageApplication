@@ -12,7 +12,7 @@ import cys.share.image.entity.User;
  * Created by Administrator on 2016/11/7.
  */
 
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
 
     private User mUser;
 
