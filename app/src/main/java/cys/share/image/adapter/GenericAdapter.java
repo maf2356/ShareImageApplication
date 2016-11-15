@@ -15,6 +15,7 @@ import java.util.List;
 import cys.share.image.BR;
 import cys.share.image.R;
 import cys.share.image.auxiliary.ShareImageAuxiliaryTool;
+import cys.share.image.database.ShareImageRealm;
 import cys.share.image.databinding.GenericItemBinding;
 import cys.share.image.entity.Cover;
 import cys.share.image.entity.TContent;
@@ -31,10 +32,15 @@ public class GenericAdapter extends RecyclerView.Adapter<GenericAdapter.BindingH
     private List<TContent> mData = new ArrayList<>();
     private ShareImageEventListener mListener;
     private FragmentActivity mActivity;
+    private String token;
     public GenericAdapter(FragmentActivity activity,List<TContent> data){
         this.mActivity = activity;
         this.mData = data;
         mListener = new ShareImageEventListener();
+        User user = ShareImageRealm.getInstance(activity).queryUserInfo();
+        if(user!=null){
+            token = user.getToken();
+        }
     }
 
     @Override
@@ -48,6 +54,8 @@ public class GenericAdapter extends RecyclerView.Adapter<GenericAdapter.BindingH
         holder.setBinding(binding);
         return holder;
     }
+
+
 
     @Override
     public void onBindViewHolder(BindingHolder holder, int position) {
@@ -72,6 +80,8 @@ public class GenericAdapter extends RecyclerView.Adapter<GenericAdapter.BindingH
         if(user!=null&&!TextUtils.isEmpty(user.getAvatar())){
             holder.getBinding().setAvatarUrl(user.getAvatar());
         }
+        holder.getBinding().setToken(token);
+        holder.getBinding().setAdapter(this);
         holder.getBinding().setActivity(mActivity);
         holder.getBinding().setListener(mListener);
         holder.getBinding().executePendingBindings();

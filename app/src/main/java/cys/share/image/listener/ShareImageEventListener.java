@@ -19,6 +19,7 @@ import cys.share.image.activity.CommentActivity;
 import cys.share.image.activity.LargeViewActivity;
 import cys.share.image.activity.MainActivity;
 import cys.share.image.activity.ShareImageUserModifyActivity;
+import cys.share.image.adapter.GenericAdapter;
 import cys.share.image.api.ShareImageApi;
 import cys.share.image.auxiliary.ShareImageAuxiliaryTool;
 import cys.share.image.entity.CommentDatas;
@@ -93,5 +94,16 @@ public class ShareImageEventListener {
 
     public void go2MoreComment(View view , CommentDatas commentDatas){
         ShareImageAuxiliaryTool.showSnackBar(view,"1123321", Snackbar.LENGTH_LONG);
+    }
+
+    public void commitLike(View view, String token, TContent item, GenericAdapter adapter){
+        ShareImageApi.commitLike(token,item.getId(),(o)->{
+            if(o!=null&&o.isLiked()){
+                item.setLiked(o.isLiked());
+                item.setLikeCount(o.getLikeCount());
+                adapter.notifyDataSetChanged();
+                ShareImageAuxiliaryTool.showSnackBar(view,"点赞成功",Snackbar.LENGTH_SHORT);
+            }
+        });
     }
 }

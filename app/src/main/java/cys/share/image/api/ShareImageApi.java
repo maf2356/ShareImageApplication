@@ -78,6 +78,14 @@ public class ShareImageApi {
                 .subscribe(subscriber);
     }
 
+    public static void commitLike(String token,int id,Action1<TContent> onNextAction){
+        UserRelevantServer server = createServer(UserRelevantServer.class);
+        server.commitLike(token,id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(onNextAction);
+    }
+
     public static void getTagList(String token,String tag,int page,Action1<TagContent> onNextAction) {
         TagListServer server = createServer(TagListServer.class);
         server.getTagList(token,tag,page)
@@ -116,6 +124,14 @@ public class ShareImageApi {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
+
+    }
+    public static void putComment(String token,int tId,int rId,String content,Action1<Comment> onNextAction,Action1<Throwable> onErrorAction){
+        UserRelevantServer relevantServer = createServer(UserRelevantServer.class);
+        relevantServer.putComment(token,tId,rId,content)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(onNextAction,onErrorAction);
 
     }
 
@@ -202,4 +218,6 @@ public class ShareImageApi {
         Retrofit retrofit = createRetrofit();
         return (T) retrofit.create(t);
     }
+
+
 }

@@ -2,8 +2,10 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
-        <import type="cys.share.image.entity.User"></import>
-        <import type="cys.share.image.auxiliary.ShareImageAuxiliaryTool"></import>
+
+        <import type="cys.share.image.entity.User" />
+
+        <import type="cys.share.image.auxiliary.ShareImageAuxiliaryTool" />
         <variable
             name="item"
             type="cys.share.image.entity.TContent"/>
@@ -13,13 +15,21 @@
 
         <variable
             name="listener"
-            type="cys.share.image.listener.ShareImageEventListener"></variable>
+            type="cys.share.image.listener.ShareImageEventListener" />
         <variable
             name="avatarUrl"
             type="String"/>
         <variable
+            name="adapter"
+            type="cys.share.image.adapter.GenericAdapter"/>
+
+        <variable
+            name="token"
+            type="String" />
+
+        <variable
             name="activity"
-            type="android.support.v4.app.FragmentActivity"></variable>
+            type="android.support.v4.app.FragmentActivity" />
     </data>
 <android.support.v7.widget.CardView
     android:layout_width="match_parent"
@@ -100,12 +110,13 @@
 
             <TextView
                 android:gravity="center"
-                android:drawableLeft="@mipmap/icon_like"
+                android:drawableLeft="@{item.isLiked()?@drawable/icon_like_liked:@drawable/icon_like}"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:id="@+id/like"
                 android:padding="@dimen/app_margin_small"
                 android:background="@drawable/clickable_bg"
+                android:onClick="@{(view)->listener.commitLike(view,token,item,adapter)}"
                 android:clickable="true"
                 android:drawablePadding="@dimen/app_margin_small"
                 android:text="@string/default_like"

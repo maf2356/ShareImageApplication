@@ -6,6 +6,7 @@ import cys.share.image.entity.Comment;
 import cys.share.image.entity.CommentDatas;
 import cys.share.image.entity.MyUploadImage;
 import cys.share.image.entity.ResponseMessage;
+import cys.share.image.entity.TContent;
 import cys.share.image.entity.TagContent;
 import cys.share.image.entity.User;
 import cys.share.image.entity.realm.MyUploadImageRealm;
@@ -16,6 +17,7 @@ import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -54,4 +56,10 @@ public interface UserRelevantServer {
 
     @GET("api/timeline/comment/list")
     Observable<CommentDatas> getComment(@Query("token")String token, @Query("dataTime")long dataTime, @Query("timelineId")int timelineId, @Query("page")int page);
+
+    @GET("api/timeline/like")
+    Observable<TContent> commitLike(@Query("token")String token,@Query("timelineId") int id);
+
+    @PUT("api/timeline/comment")
+    Observable<Comment> putComment(@Query("token")String token,@Query("timelineId")int id,@Query("replyCommentId") int replyCommentId,@Query("content")String content);
 }
