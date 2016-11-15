@@ -8,7 +8,7 @@
 
     <color name="colorPrimaryLightForClick">#D5D5D9</color>
 
-
+    <color name="comment_public_bg_color">#f1e7e7ef</color>
 
     <color name="line_color">#ddd</color>
 

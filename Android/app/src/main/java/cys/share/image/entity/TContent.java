@@ -1,10 +1,14 @@
 package cys.share.image.entity;
 
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
+
 import com.google.gson.Gson;
 
 import java.io.Serializable;
 import java.util.List;
 
+import cys.share.image.BR;
 import cys.share.image.entity.realm.BaseBean;
 import cys.share.image.entity.realm.TagContentRealm;
 import cys.share.image.entity.realm.imp.RealmTransaction;
@@ -12,7 +16,7 @@ import cys.share.image.entity.realm.imp.RealmTransaction;
 /**
  * Created by Administrator on 2016/11/8.
  */
-public class TContent extends BaseBean implements RealmTransaction<TagContentRealm,TContent>,Serializable {
+public class TContent extends BaseObservable implements RealmTransaction<TagContentRealm,TContent>,Serializable {
 
     private int id;
 
@@ -106,8 +110,10 @@ public class TContent extends BaseBean implements RealmTransaction<TagContentRea
         return likeCount;
     }
 
+    @Bindable
     public void setLikeCount(int likeCount) {
         this.likeCount = likeCount;
+        this.notifyPropertyChanged(BR.likeCount);
     }
 
     public int getCommentCount() {
@@ -130,8 +136,10 @@ public class TContent extends BaseBean implements RealmTransaction<TagContentRea
         return liked;
     }
 
+    @Bindable
     public void setLiked(boolean liked) {
         this.liked = liked;
+        this.notifyPropertyChanged(BR.liked);
     }
 
     @Override

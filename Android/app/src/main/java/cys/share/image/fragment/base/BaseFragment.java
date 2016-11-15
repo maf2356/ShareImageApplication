@@ -66,12 +66,9 @@ public abstract class BaseFragment<T> extends Fragment{
         mDataBinding.recyclerView.addItemDecoration(new MaterialViewPagerHeaderDecorator());
         mDataBinding.recyclerView.setItemAnimator(new FadeInAnimator());
         mDataBinding.swipeRefreshLayout.setProgressViewOffset(true,0, (int) getResources().getDimension(R.dimen.viewpager_headerHeight)/2);
-        listener = new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                mPage = 1;
-                requestData();
-            }
+        listener = ()->{
+            mPage = 1;
+            requestData();
         };
         mDataBinding.swipeRefreshLayout.setOnRefreshListener(listener);
         onViewCreated(savedInstanceState);
@@ -80,12 +77,9 @@ public abstract class BaseFragment<T> extends Fragment{
 
     public void onRefresh(){
 
-        mDataBinding.swipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                mDataBinding.swipeRefreshLayout.setRefreshing(true);
-                listener.onRefresh();
-            }
+        mDataBinding.swipeRefreshLayout.post(()->{
+            mDataBinding.swipeRefreshLayout.setRefreshing(true);
+            listener.onRefresh();
         });
     }
 

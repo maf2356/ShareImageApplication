@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.view.View;
 
 import java.util.Arrays;
 
@@ -23,6 +25,7 @@ public class CommentActivity extends BaseActivity {
 
     ActivityCommentBinding mBinding;
     TContent item;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,18 +35,57 @@ public class CommentActivity extends BaseActivity {
         layoutManager = new LinearLayoutManager(this);
         mBinding.recyclerView.setLayoutManager(layoutManager);
         mBinding.recyclerView.setHasFixedSize(true);
+        mBinding.setUser(getUser());
+        initSwipeRefresh();
         requestData();
+        initCommentLayout();
     }
 
-    public void requestData() {
+    private void initCommentLayout(){
+        if(mBinding!=null){
+            mBinding.showCommentLayout.setOnClickListener((o)->{
+                mBinding.showCommentLayout.setVisibility(View.INVISIBLE);
+                mBinding.showCommentEditTextLayout.setVisibility(View.VISIBLE);
+                mBinding.showCommentEditTextLayout.setFocusable(true);
+                mBinding.showCommentEditTextLayout.setFocusableInTouchMode(true);
+                mBinding.showCommentEditTextLayout.requestFocus();
+            });
+            mBinding.showCommentEditTextLayout.setOnFocusChangeListener((v,b)->{
+                ShareImageAuxiliaryTool.log(String.valueOf(b));
+            });
+        }
+    }
+
+    private void initSwipeRefresh(){
+        mBinding.swipeRefreshLayout.setProgressViewOffset(true,0, (int) (getResources().getDimension(R.dimen.viewpager_headerHeight)/2));
+        mBinding.swipeRefreshLayout.setOnRefreshListener(this::requestData);
+        mBinding.swipeRefreshLayout.setRefreshing(true);
+    }
+
+    private void requestData() {
         ShareImageApi.getComment(getUser().getToken(),0,item.getId(),1,(o)->{
+            closeSwipeRefreshing();
             if(o.getCount()!=0){
+                mBinding.showCommentLayout.setVisibility(View.VISIBLE);
+                mBinding.showCommentEditTextLayout.setVisibility(View.INVISIBLE);
                 mBinding.recyclerView.setAdapter(new CommentAdapter(this,o.getDatas()));
             }
-        },(e)->{
-            ShareImageAuxiliaryTool.log(e.getMessage());
-        });
+        },(e)-> closeSwipeRefreshing());
     }
 
 
+    private void closeSwipeRefreshing(){
+        if(mBinding.swipeRefreshLayout.isRefreshing()){
+            mBinding.swipeRefreshLayout.setRefreshing(false);
+        }
+    }
+
+    public void commit(View view){
+        if(!TextUtils.isEmpty(mBinding.commentEd.getText().toString())){
+            ShareImageApi.putComment(getUser().getToken(),item.getId(),0,mBinding.commentEd.getText().toString(),
+                    (comment -> {
+                        ShareImageAuxiliaryTool.log(comment.getContent());
+                    }),throwable -> ShareImageAuxiliaryTool.log(throwable.getMessage()));
+        }
+    }
 }
