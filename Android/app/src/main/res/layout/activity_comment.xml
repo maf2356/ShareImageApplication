@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="user"
+            type="cys.share.image.entity.User"/>
+        <variable
+            name="fragment"
+            type="cys.share.image.fragment.base.BaseFragment" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <RelativeLayout
+            android:id="@+id/showCommentLayout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/user_info_title_height"
+            android:layout_alignParentBottom="true"
+            android:background="@color/comment_public_bg_color"
+            android:paddingLeft="@dimen/app_margin"
+            android:visibility="visible">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/avatar"
+                android:layout_width="@dimen/user_info_avatar_height"
+                android:layout_height="@dimen/user_info_avatar_height"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/ic_launcher"
+                app:civ_border_color="#c2636161"
+                app:civ_border_width="1dp"
+                app:loadAvatar="@{user.avatar}"
+                />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/app_margin_small"
+                android:layout_toEndOf="@+id/avatar"
+                android:text="回复（已有100条）"
+                android:textColor="@color/colorPrimaryDark" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/showCommentEditTextLayout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/user_info_title_height"
+            android:layout_alignParentBottom="true"
+            android:background="@color/comment_public_bg_color"
+            android:paddingLeft="@dimen/app_margin"
+            android:visibility="visible">
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/commentEd"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                />
+
+            <Button
+                android:text="Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:onClick="commit"
+                />
+        </RelativeLayout>
+    </RelativeLayout>
+</layout>
