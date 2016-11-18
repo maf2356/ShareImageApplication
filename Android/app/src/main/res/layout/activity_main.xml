@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+
+        <variable
+            name="user"
+            type="cys.share.image.entity.User"></variable>
+        <variable
+            name="listener"
+            type="cys.share.image.listener.ShareImageEventListener"></variable>
+
+        <variable
+            name="activity"
+            type="cys.share.image.activity.MainActivity"></variable>
+    </data>
+<android.support.v4.widget.DrawerLayout
+    android:id="@+id/drawerLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
+
+    <!--app:viewpager_logo="@layout/header_logo"-->
+    <com.github.florent37.materialviewpager.MaterialViewPager
+        android:id="@+id/materialViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:viewpager_animatedHeaderImage="false"
+        app:viewpager_color="@color/colorPrimary"
+        app:viewpager_displayToolbarWhenSwipe="true"
+        app:viewpager_enableToolbarElevation="true"
+        app:viewpager_headerAdditionalHeight="20dp"
+        app:viewpager_headerAlpha="1.0"
+        app:viewpager_headerHeight="@dimen/viewpager_headerHeight"
+        app:viewpager_hideLogoWithFade="false"
+        app:viewpager_hideToolbarAndTitle="true"
+        app:viewpager_imageHeaderDarkLayerAlpha="0.2"
+        app:viewpager_logoMarginTop="0dp"
+        app:viewpager_pagerTitleStrip="@layout/material_view_pager_pagertitlestrip_newstand"
+        app:viewpager_parallaxHeaderFactor="1"
+        app:viewpager_transparentToolbar="true"
+
+        />
+
+
+    <!--<View-->
+    <!--android:id="@+id/view"-->
+    <!--android:alpha="0.32"-->
+    <!--android:background="@color/black"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"/>-->
+
+    <LinearLayout
+        android:id="@+id/otherRootView"
+        android:layout_width="280dp"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:layout_gravity="start"
+        android:gravity="center_vertical"
+        android:background="@mipmap/img_user_relevant"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <ImageView
+                android:layout_width="@dimen/user_drawer_avatar_size"
+                android:layout_height="@dimen/user_drawer_avatar_size"
+                app:loadAvatar="@{user.avatar}"
+                android:id="@+id/avatar"
+                android:src="@mipmap/ic_launcher"
+                android:onClick="@{(view)->listener.motifyAvatar(view,activity)}"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/user_drawer_avatar_margin_top" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/user_drawer_item_margin_left"
+                android:layout_below="@+id/avatar"
+                android:layout_centerHorizontal="true">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/user_drawer_item_height"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/white"
+                    android:text="@string/my_pictures"
+                    android:clickable="true"
+                    android:onClick="mainLogin"
+                    android:gravity="center_vertical"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/user_drawer_item_height"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/white"
+                    android:text="@{user.nickName}"
+                    android:onClick="@{(view)->listener.modifyUserNick(view,activity)}"
+
+                    android:gravity="center_vertical"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/user_drawer_item_height"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/white"
+                    android:text="修改密码"
+                    android:onClick="@{(view)->listener.modifyUserPassword(view,activity)}"
+
+                    android:gravity="center_vertical"
+                    />
+
+
+            </LinearLayout>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+</android.support.v4.widget.DrawerLayout>
+</layout>
