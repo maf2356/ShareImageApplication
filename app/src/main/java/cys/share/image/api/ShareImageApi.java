@@ -19,6 +19,7 @@ import cys.share.image.entity.Comment;
 import cys.share.image.entity.CommentDatas;
 import cys.share.image.entity.MyUploadImage;
 import cys.share.image.entity.NavTag;
+import cys.share.image.entity.NewNavTags;
 import cys.share.image.entity.ResponseMessage;
 import cys.share.image.entity.TContent;
 import cys.share.image.entity.TagContent;
@@ -69,7 +70,7 @@ public class ShareImageApi {
      *
      * @param subscriber
      */
-    public static void getNavTags(Subscriber<List<String>> subscriber) {
+    public static void getNavTags(Subscriber<NewNavTags> subscriber) {
         Retrofit retrofit = createRetrofit();
         retrofit.create(NaVTagsServer.class)
                 .getNavTags()

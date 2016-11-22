@@ -9,12 +9,15 @@ import android.text.TextUtils;
 import android.view.View;
 
 import java.util.Arrays;
+import java.util.List;
 
 import cys.share.image.R;
 import cys.share.image.adapter.CommentAdapter;
 import cys.share.image.api.ShareImageApi;
 import cys.share.image.auxiliary.ShareImageAuxiliaryTool;
 import cys.share.image.databinding.ActivityCommentBinding;
+import cys.share.image.entity.Comment;
+import cys.share.image.entity.CommentDatas;
 import cys.share.image.entity.TContent;
 
 /**
@@ -25,7 +28,8 @@ public class CommentActivity extends BaseActivity {
 
     ActivityCommentBinding mBinding;
     TContent item;
-
+    CommentDatas mDatas;
+    CommentAdapter mAdapter;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,9 +70,10 @@ public class CommentActivity extends BaseActivity {
         ShareImageApi.getComment(getUser().getToken(),0,item.getId(),1,(o)->{
             closeSwipeRefreshing();
             if(o.getCount()!=0){
+                mDatas = o;
                 mBinding.showCommentLayout.setVisibility(View.VISIBLE);
                 mBinding.showCommentEditTextLayout.setVisibility(View.INVISIBLE);
-                mBinding.recyclerView.setAdapter(new CommentAdapter(this,o.getDatas()));
+                setAdapter();
             }
         },(e)-> closeSwipeRefreshing());
     }
@@ -80,10 +85,21 @@ public class CommentActivity extends BaseActivity {
         }
     }
 
+    private void setAdapter(){
+        if(mAdapter!=null){
+            mAdapter.notifyDataSetChanged();
+        }else{
+            mAdapter = new CommentAdapter(this,mDatas.getDatas());
+            mBinding.recyclerView.setAdapter(mAdapter);
+        }
+    }
+
     public void commit(View view){
         if(!TextUtils.isEmpty(mBinding.commentEd.getText().toString())){
             ShareImageApi.putComment(getUser().getToken(),item.getId(),0,mBinding.commentEd.getText().toString(),
                     (comment -> {
+                        mDatas.getDatas().add(comment);
+                        setAdapter();
                         ShareImageAuxiliaryTool.log(comment.getContent());
                     }),throwable -> ShareImageAuxiliaryTool.log(throwable.getMessage()));
         }
