@@ -20,6 +20,7 @@ import cys.share.image.auxiliary.MaterialViewPagerHeaderDecorator;
 import cys.share.image.auxiliary.ShareImageAuxiliaryTool;
 import cys.share.image.database.ShareImageRealm;
 import cys.share.image.entity.User;
+import cys.share.image.view.ShareImageRecycleView;
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
 import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
 import jp.wasabeef.recyclerview.animators.FadeInAnimator;
@@ -29,7 +30,7 @@ import jp.wasabeef.recyclerview.animators.OvershootInLeftAnimator;
 /**
  * Created by Administrator on 2016/10/26.
  */
-public abstract class BaseFragment<T> extends Fragment{
+public abstract class BaseFragment<T> extends Fragment implements ShareImageRecycleView.OnLoadMoreListener{
 
 
     public List<T> mData  = new ArrayList<>();;
